@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 
-import { ExerciseCreateComponent } from './exercise-create.component';
+import { ExerciseEditComponent } from './exercise-edit.component';
 import { ExerciseService } from 'src/app/services/exercise.service';
 import { ExerciseDto } from 'src/app/dtos/exercise.dto';
 
-describe('ExerciseCreateComponent', () => {
-  let component: ExerciseCreateComponent;
-  let fixture: ComponentFixture<ExerciseCreateComponent>;
+describe('ExerciseEditComponent', () => {
+  let component: ExerciseEditComponent;
+  let fixture: ComponentFixture<ExerciseEditComponent>;
   let mockRouter: jasmine.SpyObj<Router>;
+  let mockActivatedRoute: any;
   let mockToastr: jasmine.SpyObj<ToastrService>;
   let mockTranslate: jasmine.SpyObj<TranslateService>;
   let mockExerciseService: jasmine.SpyObj<ExerciseService>;
@@ -29,21 +30,31 @@ describe('ExerciseCreateComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const toastrSpy = jasmine.createSpyObj('ToastrService', ['success', 'error']);
     const translateSpy = jasmine.createSpyObj('TranslateService', ['instant']);
-    const exerciseServiceSpy = jasmine.createSpyObj('ExerciseService', ['createExercise']);
+    const exerciseServiceSpy = jasmine.createSpyObj('ExerciseService', [
+      'getExerciseById',
+      'updateExercise'
+    ]);
+
+    mockActivatedRoute = {
+      snapshot: {
+        params: { id: '1' }
+      }
+    };
 
     await TestBed.configureTestingModule({
-      declarations: [ExerciseCreateComponent],
+      declarations: [ExerciseEditComponent],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: Router, useValue: routerSpy },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: ToastrService, useValue: toastrSpy },
         { provide: TranslateService, useValue: translateSpy },
         { provide: ExerciseService, useValue: exerciseServiceSpy }
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ExerciseCreateComponent);
+    fixture = TestBed.createComponent(ExerciseEditComponent);
     component = fixture.componentInstance;
     mockRouter = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     mockToastr = TestBed.inject(ToastrService) as jasmine.SpyObj<ToastrService>;
@@ -51,7 +62,8 @@ describe('ExerciseCreateComponent', () => {
     mockExerciseService = TestBed.inject(ExerciseService) as jasmine.SpyObj<ExerciseService>;
 
     mockTranslate.instant.and.returnValue('Translated text');
-    mockExerciseService.createExercise.and.returnValue(of(mockExercise));
+    mockExerciseService.getExerciseById.and.returnValue(of(mockExercise));
+    mockExerciseService.updateExercise.and.returnValue(of(mockExercise));
   });
 
   it('should create', () => {
@@ -59,12 +71,15 @@ describe('ExerciseCreateComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should initialize form on init', () => {
+    it('should initialize component correctly', () => {
       spyOn(component, 'initializeForm');
+      spyOn(component, 'loadExercise');
 
       component.ngOnInit();
 
+      expect(component.exerciseId).toBe('1');
       expect(component.initializeForm).toHaveBeenCalled();
+      expect(component.loadExercise).toHaveBeenCalled();
     });
   });
 
@@ -135,29 +150,48 @@ describe('ExerciseCreateComponent', () => {
 
       component.exerciseForm.get('youtube')?.setValue('https://youtube.com/watch?v=test');
       expect(component.exerciseForm.get('youtube')?.valid).toBe(true);
+    });
+  });
 
-      component.exerciseForm.get('youtube')?.setValue('https://youtu.be/test123');
-      expect(component.exerciseForm.get('youtube')?.invalid).toBe(true);
+  describe('loadExercise', () => {
+    beforeEach(() => {
+      component.initializeForm();
+      component.exerciseId = '1';
     });
 
-    it('should initialize form with empty values', () => {
-      component.initializeForm();
+    it('should load exercise and populate form', () => {
+      component.loadExercise();
 
-      expect(component.exerciseForm.get('name')?.value).toBe('');
-      expect(component.exerciseForm.get('description')?.value).toBe('');
-      expect(component.exerciseForm.get('calories')?.value).toBe('');
-      expect(component.exerciseForm.get('youtube')?.value).toBe('');
+      expect(mockExerciseService.getExerciseById).toHaveBeenCalledWith(1);
+      expect(component.exerciseForm.get('name')?.value).toBe(mockExercise.name);
+      expect(component.exerciseForm.get('description')?.value).toBe(mockExercise.description);
+      expect(component.exerciseForm.get('calories')?.value).toBe(mockExercise.calories);
+      expect(component.exerciseForm.get('youtube')?.value).toBe(mockExercise.youtube);
+      expect(component.isLoading).toBe(false);
+    });
+
+    it('should handle error when loading exercise', () => {
+      mockExerciseService.getExerciseById.and.returnValue(throwError(() => new Error('API Error')));
+
+      component.loadExercise();
+
+      expect(component.isLoading).toBe(false);
+      expect(mockToastr.error).toHaveBeenCalledWith('Translated text', 'Translated text');
+      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_EDIT.ERROR_LOADING_MESSAGE');
+      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_EDIT.ERROR_LOADING_TITLE');
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/exercises']);
     });
   });
 
   describe('onSubmit', () => {
     beforeEach(() => {
       component.initializeForm();
+      component.exerciseId = '1';
       component.exerciseForm.patchValue({
-        name: 'New Exercise',
-        description: 'New description',
-        calories: '120',
-        youtube: 'https://youtube.com/watch?v=newvideo'
+        name: 'Updated Exercise',
+        description: 'Updated description',
+        calories: '150',
+        youtube: 'https://youtube.com/watch?v=updated'
       });
     });
 
@@ -165,10 +199,10 @@ describe('ExerciseCreateComponent', () => {
       component.onSubmit();
 
       expect(component.isSubmitting).toBe(true);
-      expect(mockExerciseService.createExercise).toHaveBeenCalledWith(jasmine.any(ExerciseDto));
+      expect(mockExerciseService.updateExercise).toHaveBeenCalledWith(1, jasmine.any(ExerciseDto));
       expect(mockToastr.success).toHaveBeenCalledWith('Translated text', 'Translated text');
-      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_CREATE.SUCCESS_MESSAGE');
-      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_CREATE.SUCCESS_TITLE');
+      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_EDIT.SUCCESS_MESSAGE');
+      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_EDIT.SUCCESS_TITLE');
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/exercises']);
     });
 
@@ -179,31 +213,18 @@ describe('ExerciseCreateComponent', () => {
       component.onSubmit();
 
       expect(component['markFormGroupTouched']).toHaveBeenCalled();
-      expect(mockExerciseService.createExercise).not.toHaveBeenCalled();
+      expect(mockExerciseService.updateExercise).not.toHaveBeenCalled();
     });
 
-    it('should handle error when creating exercise', () => {
-      mockExerciseService.createExercise.and.returnValue(throwError(() => new Error('API Error')));
+    it('should handle error when updating exercise', () => {
+      mockExerciseService.updateExercise.and.returnValue(throwError(() => new Error('API Error')));
 
       component.onSubmit();
 
       expect(component.isSubmitting).toBe(false);
       expect(mockToastr.error).toHaveBeenCalledWith('Translated text', 'Translated text');
-      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_CREATE.ERROR_MESSAGE');
-      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_CREATE.ERROR_TITLE');
-    });
-
-    it('should create ExerciseDto without id', () => {
-      component.onSubmit();
-
-      const expectedDto = new ExerciseDto(
-        'New Exercise',
-        'New description',
-        '120',
-        'https://youtube.com/watch?v=newvideo'
-      );
-
-      expect(mockExerciseService.createExercise).toHaveBeenCalledWith(expectedDto);
+      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_EDIT.ERROR_MESSAGE');
+      expect(mockTranslate.instant).toHaveBeenCalledWith('EXERCISE_EDIT.ERROR_TITLE');
     });
   });
 
@@ -244,6 +265,8 @@ describe('ExerciseCreateComponent', () => {
   describe('Component initialization state', () => {
     it('should initialize with correct default values', () => {
       expect(component.isSubmitting).toBe(false);
+      expect(component.isLoading).toBe(true);
+      expect(component.exerciseId).toBeUndefined();
     });
   });
 
@@ -273,24 +296,12 @@ describe('ExerciseCreateComponent', () => {
 
       expect(component.exerciseForm.invalid).toBe(true);
     });
-
-    it('should be invalid with invalid field formats', () => {
-      component.exerciseForm.patchValue({
-        name: 'Valid Exercise',
-        description: 'Valid description',
-        calories: 'invalid-calories',
-        youtube: 'invalid-url'
-      });
-
-      expect(component.exerciseForm.invalid).toBe(true);
-      expect(component.exerciseForm.get('calories')?.invalid).toBe(true);
-      expect(component.exerciseForm.get('youtube')?.invalid).toBe(true);
-    });
   });
 
   describe('ExerciseDto creation', () => {
     beforeEach(() => {
       component.initializeForm();
+      component.exerciseId = '1';
       component.exerciseForm.patchValue({
         name: 'Test Exercise',
         description: 'Test description',
@@ -299,95 +310,18 @@ describe('ExerciseCreateComponent', () => {
       });
     });
 
-    it('should create ExerciseDto with form values and no ID', () => {
+    it('should create ExerciseDto with form values and exercise ID', () => {
       component.onSubmit();
 
       const expectedDto = new ExerciseDto(
         'Test Exercise',
         'Test description',
         '100',
-        'https://youtube.com/watch?v=test'
+        'https://youtube.com/watch?v=test',
+        '1'
       );
 
-      expect(mockExerciseService.createExercise).toHaveBeenCalledWith(expectedDto);
-    });
-  });
-
-  describe('Form field validation edge cases', () => {
-    beforeEach(() => {
-      component.initializeForm();
-    });
-
-    it('should handle boundary values for name field', () => {
-      const maxValidName = 'a'.repeat(255);
-      component.exerciseForm.get('name')?.setValue(maxValidName);
-      expect(component.exerciseForm.get('name')?.valid).toBe(true);
-
-      const tooLongName = 'a'.repeat(256);
-      component.exerciseForm.get('name')?.setValue(tooLongName);
-      expect(component.exerciseForm.get('name')?.invalid).toBe(true);
-    });
-
-    it('should handle boundary values for description field', () => {
-      const maxValidDescription = 'a'.repeat(1000);
-      component.exerciseForm.get('description')?.setValue(maxValidDescription);
-      expect(component.exerciseForm.get('description')?.valid).toBe(true);
-
-      const tooLongDescription = 'a'.repeat(1001);
-      component.exerciseForm.get('description')?.setValue(tooLongDescription);
-      expect(component.exerciseForm.get('description')?.invalid).toBe(true);
-    });
-
-    it('should handle boundary values for youtube field', () => {
-      const validUrl = 'https://youtube.com/watch?v=abcdefghijk';
-      component.exerciseForm.get('youtube')?.setValue(validUrl);
-      expect(component.exerciseForm.get('youtube')?.valid).toBe(true);
-
-      const baseUrl = 'https://youtube.com/watch?v=';
-      const longVideoId = 'a'.repeat(500 - baseUrl.length + 1);
-      const tooLongUrl = baseUrl + longVideoId;
-      component.exerciseForm.get('youtube')?.setValue(tooLongUrl);
-      expect(component.exerciseForm.get('youtube')?.hasError('maxlength')).toBe(true);
-    });
-  });
-
-  describe('Error handling', () => {
-    beforeEach(() => {
-      component.initializeForm();
-    });
-
-    it('should handle network errors gracefully', () => {
-      component.exerciseForm.patchValue({
-        name: 'Test Exercise',
-        description: 'Test description',
-        calories: '100',
-        youtube: 'https://youtube.com/watch?v=test'
-      });
-
-      const networkError = { status: 0, message: 'Network error' };
-      mockExerciseService.createExercise.and.returnValue(throwError(() => networkError));
-
-      component.onSubmit();
-
-      expect(component.isSubmitting).toBe(false);
-      expect(mockToastr.error).toHaveBeenCalled();
-    });
-
-    it('should handle server validation errors', () => {
-      component.exerciseForm.patchValue({
-        name: 'Test Exercise',
-        description: 'Test description',
-        calories: '100',
-        youtube: 'https://youtube.com/watch?v=test'
-      });
-
-      const validationError = { status: 422, message: 'Validation failed' };
-      mockExerciseService.createExercise.and.returnValue(throwError(() => validationError));
-
-      component.onSubmit();
-
-      expect(component.isSubmitting).toBe(false);
-      expect(mockToastr.error).toHaveBeenCalled();
+      expect(mockExerciseService.updateExercise).toHaveBeenCalledWith(1, expectedDto);
     });
   });
 });

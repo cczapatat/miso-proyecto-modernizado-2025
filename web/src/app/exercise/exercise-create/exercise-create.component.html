@@ -1,56 +1,91 @@
 <div class="container">
-  <h2 class="text-center title">{{ 'STORE.TITLE_REGISTER' | translate }}</h2>
+  <h2 class="text-center title">{{ 'EXERCISE_CREATE.TITLE' | translate }}</h2>
   <div class="form-container">
-    <form [formGroup]="this.exerciseForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="exerciseForm" (ngSubmit)="onSubmit()">
+
+      <!-- Name Field -->
       <div class="mb-3">
-        <label class="form-label">{{ 'STORE.NAME' | translate }}</label>
-        <input id="store_name" type="text" class="form-control" formControlName="name" placeholder="{{ 'STORE.NAME_PLACEHOLDER' | translate }}">
-        <div id="store_name_error" *ngIf="this.formControls?.['name'].invalid && this.formControls?.['name'].touched" class="text-danger">{{ 'STORE.NAME_ERROR' | translate }}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label class="form-label">{{ 'STORE.PHONE' | translate }}</label>
-          <input id="store_phone" type="text" class="form-control" formControlName="phone" placeholder="{{ 'STORE.PHONE_PLACEHOLDER' | translate }}">
-          <div id="store_phone_error" *ngIf="formControls?.['phone'].invalid && formControls?.['phone'].touched" class="text-danger">{{ 'STORE.PHONE_ERROR' | translate }}</div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label class="form-label">{{ 'STORE.EMAIL' | translate }}</label>
-          <input id="store_email" type="email" class="form-control" formControlName="email" placeholder="{{ 'STORE.EMAIL_PLACEHOLDER' | translate }}">
-          <div id="store_email_error" *ngIf="formControls?.['email'].invalid && formControls?.['email'].touched" class="text-danger">{{ 'STORE.EMAIL_ERROR' | translate }}</div>
+        <label for="exercise_name" class="form-label">{{ 'EXERCISE_CREATE.NAME' | translate }}</label>
+        <input id="exercise_name" type="text" class="form-control" formControlName="name"
+          [placeholder]="'EXERCISE_CREATE.NAME_PLACEHOLDER' | translate" maxlength="255">
+        <div id="exercise_name_error" *ngIf="formControls?.['name'].invalid && formControls?.['name'].touched"
+          class="text-danger mt-1">
+          <div *ngIf="formControls?.['name'].errors?.['required']">
+            {{ 'EXERCISE_CREATE.REQUIRED' | translate }}
+          </div>
+          <div *ngIf="formControls?.['name'].errors?.['maxlength']">
+            {{ 'EXERCISE_CREATE.MAX_LENGTH' | translate: {max: 255} }}
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label class="form-label">{{ 'STORE.ADDRESS' | translate }}</label>
-          <input id="store_address" type="text" class="form-control" formControlName="address" placeholder="{{ 'STORE.ADDRESS_PLACEHOLDER' | translate }}">
-          <div id="store_address_error" *ngIf="formControls?.['address'].invalid && formControls?.['address'].touched" class="text-danger">{{ 'STORE.ADDRESS_ERROR' | translate }}</div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label class="form-label">{{ 'STORE.CAPACITY' | translate }}</label>
-          <input id="store_capacity" type="number" class="form-control" formControlName="capacity" placeholder="{{ 'STORE.CAPACITY_PLACEHOLDER' | translate }}">
-          <div id="store_capacity_error" *ngIf="formControls?.['capacity'].invalid && formControls?.['capacity'].touched" class="text-danger">{{ 'STORE.CAPACITY_ERROR' | translate }}</div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label class="form-label">{{ 'STORE.STATE' | translate }}</label>
-          <select id="store_state" class="form-select" formControlName="state" [attr.aria-label]="'STORE.STATE_SELECTED' | translate">
-            <option value="">{{ 'STORE.STATE_SELECTED' | translate }}</option>
-          </select>
-          <div id="store_state_error" *ngIf="formControls?.['state'].invalid && formControls?.['state'].touched" class="text-danger">{{ 'STORE.STATE_ERROR' | translate }}</div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label class="form-label">{{ 'STORE.SECURITY_LEVEL' | translate }}</label>
-          <select id="store_security_level" class="form-select" formControlName="securityLevel" [attr.aria-label]="'STORE.SECURITY_LEVEL_SELECTED' | translate">
-            <option value="">{{ 'STORE.SECURITY_LEVEL_SELECTED' | translate }}</option>
-          </select>
-          <div id="store_security_level_error" *ngIf="formControls?.['securityLevel'].invalid && formControls?.['securityLevel'].touched"
-            class="text-danger">{{ 'STORE.SECURITY_LEVEL_ERROR' | translate }}</div>
+
+      <!-- Description Field -->
+      <div class="mb-3">
+        <label for="exercise_description" class="form-label">{{ 'EXERCISE_CREATE.DESCRIPTION' | translate }}</label>
+        <textarea id="exercise_description" class="form-control" formControlName="description"
+          [placeholder]="'EXERCISE_CREATE.DESCRIPTION_PLACEHOLDER' | translate" rows="4" maxlength="1000"></textarea>
+        <div id="exercise_description_error"
+          *ngIf="formControls?.['description'].invalid && formControls?.['description'].touched"
+          class="text-danger mt-1">
+          <div *ngIf="formControls?.['description'].errors?.['required']">
+            {{ 'EXERCISE_CREATE.REQUIRED' | translate }}
+          </div>
+          <div *ngIf="formControls?.['description'].errors?.['maxlength']">
+            {{ 'EXERCISE_CREATE.MAX_LENGTH' | translate: {max: 1000} }}
+          </div>
         </div>
       </div>
+
+      <!-- Calories Field -->
+      <div class="mb-3">
+        <label for="exercise_calories" class="form-label">{{ 'EXERCISE_CREATE.CALORIES' | translate }}</label>
+        <input id="exercise_calories" type="number" class="form-control" formControlName="calories"
+          [placeholder]="'EXERCISE_CREATE.CALORIES_PLACEHOLDER' | translate" min="1">
+        <div id="exercise_calories_error"
+          *ngIf="formControls?.['calories'].invalid && formControls?.['calories'].touched" class="text-danger mt-1">
+          <div *ngIf="formControls?.['calories'].errors?.['required']">
+            {{ 'EXERCISE_CREATE.REQUIRED' | translate }}
+          </div>
+          <div *ngIf="formControls?.['calories'].errors?.['min']">
+            {{ 'EXERCISE_CREATE.MIN_VALUE' | translate }}
+          </div>
+          <div *ngIf="formControls?.['calories'].errors?.['pattern']">
+            {{ 'EXERCISE_CREATE.INVALID_NUMBER' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <!-- YouTube Field -->
+      <div class="mb-3">
+        <label for="exercise_youtube" class="form-label">{{ 'EXERCISE_CREATE.YOUTUBE' | translate }}</label>
+        <input id="exercise_youtube" type="url" class="form-control" formControlName="youtube"
+          [placeholder]="'EXERCISE_CREATE.YOUTUBE_PLACEHOLDER' | translate" maxlength="500">
+        <div id="exercise_youtube_error" *ngIf="formControls?.['youtube'].invalid && formControls?.['youtube'].touched"
+          class="text-danger mt-1">
+          <div *ngIf="formControls?.['youtube'].errors?.['required']">
+            {{ 'EXERCISE_CREATE.REQUIRED' | translate }}
+          </div>
+          <div *ngIf="formControls?.['youtube'].errors?.['maxlength']">
+            {{ 'EXERCISE_CREATE.MAX_LENGTH' | translate: {max: 500} }}
+          </div>
+          <div *ngIf="formControls?.['youtube'].errors?.['youtubeUrl']">
+            {{ 'EXERCISE_CREATE.INVALID_YOUTUBE_URL' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
       <div class="text-center">
-        <button id="store_btn_register" type="submit" class="btn register-btn" [ngClass]="{'register-btn-active': !exerciseForm.invalid}"
-          [disabled]="exerciseForm.invalid">{{ 'STORE.REGISTER_BUTTON' | translate }}</button>
+        <div class="d-flex gap-3 justify-content-center">
+          <button id="exercise_btn_cancel" type="button" class="btn cancel-btn" (click)="onCancel()">
+            {{ 'EXERCISE_CREATE.CANCEL' | translate }}
+          </button>
+          <button id="exercise_btn_create" type="submit" class="btn create-btn"
+            [disabled]="exerciseForm.invalid || isSubmitting">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+            {{ 'EXERCISE_CREATE.CREATE' | translate }}
+          </button>
+        </div>
       </div>
     </form>
   </div>

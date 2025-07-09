@@ -8,48 +8,50 @@
 
 <!-- Sidebar -->
 <header>
-<div class="sidebar" [class.show]="isMenuVisible">
-  <div class="logo">
-    <h2 id="nav_home" (click)="navigate('/')"><i class="bi bi-box"></i> {{ 'NAV.TITLE' | translate }}</h2>
+  <div class="sidebar" [class.show]="isMenuVisible">
+    <div class="logo">
+      <h2 id="nav_home" (click)="navigate('/')"><i class="bi bi-box"></i> {{ 'NAV.TITLE' | translate }}</h2>
+    </div>
+
+    <nav class="nav-menu">
+      <div class="menu-section">
+        <h3><i class="bi bi-person"></i> {{ 'NAV.MODULES' | translate }}</h3>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a id="nav_users" class="nav-link" (click)="navigate('/users')">
+              <i class="bi bi-cart-plus"></i> {{ 'NAV.USERS' | translate }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a id="nav_exercises" class="nav-link" (click)="navigate('/exercises')">
+              <i class="bi bi-cart-plus"></i> {{ 'NAV.EXERCISES' | translate }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h3><i class="bi bi-sliders"></i> {{ 'NAV.SETTINGS' | translate }}</h3>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a id="nav_languages" class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#idiomasSubmenu"
+              role="button">
+              <i class="bi bi-translate"></i> {{ 'NAV.LANGUAGES' | translate }}
+            </a>
+            <div class="collapse" id="idiomasSubmenu">
+              <ul class="nav flex-column ms-3">
+                <li class="nav-item" *ngFor="let lang of availableLangs">
+                  <a id="nav_{{ lang }}" class="nav-link" (click)="changeLanguage(lang)"
+                    [class.active]="currentLang === lang">
+                    <img src="assets/flags/{{lang.split('-')[1]}}.svg" [alt]="lang" class="flag-icon">
+                    {{ lang }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </div>
-
-  <nav class="nav-menu">
-    <div class="menu-section">
-      <h3><i class="bi bi-person"></i> {{ 'NAV.MODULES' | translate }}</h3>
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a id="nav_users" class="nav-link" (click)="navigate('/users')">
-            <i class="bi bi-cart-plus"></i> {{ 'NAV.USERS' | translate }}
-          </a>
-        </li>
-        <li class="nav-item">
-          <a id="nav_exercises" class="nav-link" (click)="navigate('/exercises')">
-            <i class="bi bi-cart-plus"></i> {{ 'NAV.EXERCISES' | translate }}
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="menu-section">
-      <h3><i class="bi bi-sliders"></i> {{ 'NAV.SETTINGS' | translate }}</h3>
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a id="nav_languages" class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#idiomasSubmenu" role="button">
-            <i class="bi bi-translate"></i> {{ 'NAV.LANGUAGES' | translate }}
-          </a>
-          <div class="collapse" id="idiomasSubmenu">
-            <ul class="nav flex-column ms-3">
-              <li class="nav-item" *ngFor="let lang of availableLangs">
-                <a id="nav_{{ lang }}" class="nav-link" (click)="changeLanguage(lang)" [class.active]="currentLang === lang">
-                  <img src="assets/flags/{{lang.split('-')[1]}}.svg" [alt]="lang" class="flag-icon">
-                  {{ lang }}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</div>
 </header>

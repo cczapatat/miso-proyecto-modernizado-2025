@@ -2,7 +2,6 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { UtilAToken } from 'src/app/utils/util-token';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +10,6 @@ import { UtilAToken } from 'src/app/utils/util-token';
 })
 export class HeaderComponent implements OnInit {
   isMenuVisible = false;
-  isAdmin = false;
   currentLang: string = 'es-CO';
   availableLangs = ['en-UK', 'es-CO'];
 
@@ -22,7 +20,6 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.isAdmin = UtilAToken.isAdmin();
     this.initializeLanguage();
   }
 

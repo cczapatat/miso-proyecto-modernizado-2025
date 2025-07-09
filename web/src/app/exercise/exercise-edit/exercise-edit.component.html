@@ -1,0 +1,103 @@
+<div class="container">
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">{{ 'EXERCISE_EDIT.LOADING' | translate }}</span>
+    </div>
+    <p class="mt-2">{{ 'EXERCISE_EDIT.LOADING_EXERCISE' | translate }}</p>
+  </div>
+
+  <!-- Edit form -->
+  <div *ngIf="!isLoading">
+    <h2 class="text-center title">{{ 'EXERCISE_EDIT.TITLE' | translate }}</h2>
+    <div class="form-container">
+      <form [formGroup]="exerciseForm" (ngSubmit)="onSubmit()">
+
+        <!-- Name Field -->
+        <div class="mb-3">
+          <label for="exercise_name" class="form-label">{{ 'EXERCISE_EDIT.NAME' | translate }}</label>
+          <input id="exercise_name" type="text" class="form-control" formControlName="name"
+            [placeholder]="'EXERCISE_EDIT.NAME_PLACEHOLDER' | translate" maxlength="255">
+          <div id="exercise_name_error" *ngIf="formControls?.['name'].invalid && formControls?.['name'].touched"
+            class="text-danger mt-1">
+            <div *ngIf="formControls?.['name'].errors?.['required']">
+              {{ 'EXERCISE_EDIT.REQUIRED' | translate }}
+            </div>
+            <div *ngIf="formControls?.['name'].errors?.['maxlength']">
+              {{ 'EXERCISE_EDIT.MAX_LENGTH' | translate: {max: 255} }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Description Field -->
+        <div class="mb-3">
+          <label for="exercise_description" class="form-label">{{ 'EXERCISE_EDIT.DESCRIPTION' | translate }}</label>
+          <textarea id="exercise_description" class="form-control" formControlName="description"
+            [placeholder]="'EXERCISE_EDIT.DESCRIPTION_PLACEHOLDER' | translate" rows="4" maxlength="1000"></textarea>
+          <div id="exercise_description_error"
+            *ngIf="formControls?.['description'].invalid && formControls?.['description'].touched"
+            class="text-danger mt-1">
+            <div *ngIf="formControls?.['description'].errors?.['required']">
+              {{ 'EXERCISE_EDIT.REQUIRED' | translate }}
+            </div>
+            <div *ngIf="formControls?.['description'].errors?.['maxlength']">
+              {{ 'EXERCISE_EDIT.MAX_LENGTH' | translate: {max: 1000} }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Calories Field -->
+        <div class="mb-3">
+          <label for="exercise_calories" class="form-label">{{ 'EXERCISE_EDIT.CALORIES' | translate }}</label>
+          <input id="exercise_calories" type="number" class="form-control" formControlName="calories"
+            [placeholder]="'EXERCISE_EDIT.CALORIES_PLACEHOLDER' | translate" min="1">
+          <div id="exercise_calories_error"
+            *ngIf="formControls?.['calories'].invalid && formControls?.['calories'].touched" class="text-danger mt-1">
+            <div *ngIf="formControls?.['calories'].errors?.['required']">
+              {{ 'EXERCISE_EDIT.REQUIRED' | translate }}
+            </div>
+            <div *ngIf="formControls?.['calories'].errors?.['min']">
+              {{ 'EXERCISE_EDIT.MIN_VALUE' | translate }}
+            </div>
+            <div *ngIf="formControls?.['calories'].errors?.['pattern']">
+              {{ 'EXERCISE_EDIT.INVALID_NUMBER' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- YouTube Field -->
+        <div class="mb-3">
+          <label for="exercise_youtube" class="form-label">{{ 'EXERCISE_EDIT.YOUTUBE' | translate }}</label>
+          <input id="exercise_youtube" type="url" class="form-control" formControlName="youtube"
+            [placeholder]="'EXERCISE_EDIT.YOUTUBE_PLACEHOLDER' | translate" maxlength="500">
+          <div id="exercise_youtube_error"
+            *ngIf="formControls?.['youtube'].invalid && formControls?.['youtube'].touched" class="text-danger mt-1">
+            <div *ngIf="formControls?.['youtube'].errors?.['required']">
+              {{ 'EXERCISE_EDIT.REQUIRED' | translate }}
+            </div>
+            <div *ngIf="formControls?.['youtube'].errors?.['maxlength']">
+              {{ 'EXERCISE_EDIT.MAX_LENGTH' | translate: {max: 500} }}
+            </div>
+            <div *ngIf="formControls?.['youtube'].errors?.['youtubeUrl']">
+              {{ 'EXERCISE_EDIT.INVALID_YOUTUBE_URL' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-center">
+          <div class="d-flex gap-3 justify-content-center">
+            <button id="exercise_btn_cancel" type="button" class="btn cancel-btn" (click)="onCancel()">
+              {{ 'EXERCISE_EDIT.CANCEL' | translate }}
+            </button>
+            <button id="exercise_btn_update" type="submit" class="btn update-btn"
+              [disabled]="exerciseForm.invalid || isSubmitting">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              {{ 'EXERCISE_EDIT.UPDATE' | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

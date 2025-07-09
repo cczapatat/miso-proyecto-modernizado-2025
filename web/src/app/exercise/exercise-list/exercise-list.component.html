@@ -23,7 +23,7 @@
             <th class="text-center">{{ 'EXERCISE_LIST.CALORIES' | translate }}</th>
             <th class="text-center">{{ 'EXERCISE_LIST.YOUTUBE' | translate }}</th>
             <th class="text-center">
-              {{ 'EXERCISE_LIST.ACTIONS' | translate }} 
+              {{ 'EXERCISE_LIST.ACTIONS' | translate }}
               <i class="bi bi-info-circle" [title]="'EXERCISE_LIST.ACTIONS_INFO' | translate"></i>
             </th>
           </tr>
@@ -42,25 +42,16 @@
               </td>
               <td class="text-center">
                 <div class="d-flex gap-2">
-                  <button 
-                    type="button" 
-                    class="btn btn-outline-info btn-sm" 
-                    [title]="'EXERCISE_LIST.VIEW' | translate"
+                  <button type="button" class="btn btn-outline-info btn-sm" [title]="'EXERCISE_LIST.VIEW' | translate"
                     (click)="viewExercise(exercise)">
                     <i class="bi bi-eye"></i>
                   </button>
-                  <button 
-                    type="button" 
-                    class="btn btn-outline-warning btn-sm" 
-                    [title]="'EXERCISE_LIST.EDIT' | translate"
-                    (click)="editExercise(exercise)">
+                  <button type="button" class="btn btn-outline-warning btn-sm"
+                    [title]="'EXERCISE_LIST.EDIT' | translate" (click)="editExercise(exercise)">
                     <i class="bi bi-pencil"></i>
                   </button>
-                  <button 
-                    type="button" 
-                    class="btn btn-outline-danger btn-sm" 
-                    [title]="'EXERCISE_LIST.DELETE' | translate"
-                    (click)="deleteExercise(exercise)">
+                  <button type="button" class="btn btn-outline-danger btn-sm"
+                    [title]="'EXERCISE_LIST.DELETE' | translate" (click)="deleteExercise(exercise)">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
@@ -111,6 +102,104 @@
           (click)="changeExercisePage(1)">
           {{ 'EXERCISE_LIST.NEXT' | translate }}<i class="bi bi-arrow-right"></i>
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Exercise Details Modal -->
+<div *ngIf="isModalOpen" class="modal-backdrop" (click)="onModalBackdropClick($event)">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ 'EXERCISE_LIST.EXERCISE_DETAILS' | translate }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Loading spinner -->
+        <div *ngIf="isLoadingExerciseDetails" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">{{ 'EXERCISE_LIST.LOADING_DETAILS' | translate }}</span>
+          </div>
+          <p class="mt-2">{{ 'EXERCISE_LIST.LOADING_DETAILS' | translate }}</p>
+        </div>
+
+        <!-- Exercise details -->
+        <div *ngIf="!isLoadingExerciseDetails && selectedExercise" class="exercise-details">
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'EXERCISE_LIST.NAME' | translate }}:</strong>
+            <span class="detail-value">{{ selectedExercise.name }}</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'EXERCISE_LIST.DESCRIPTION' | translate }}:</strong>
+            <span class="detail-value">{{ selectedExercise.description }}</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'EXERCISE_LIST.CALORIES' | translate }}:</strong>
+            <span class="detail-value">{{ selectedExercise.calories }}</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'EXERCISE_LIST.YOUTUBE' | translate }}:</strong>
+            <span class="detail-value">
+              <a [href]="selectedExercise.youtube" target="_blank" rel="noopener noreferrer" class="youtube-link">
+                <i class="bi bi-youtube text-danger"></i> {{ 'EXERCISE_LIST.WATCH_VIDEO' | translate }}
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          {{ 'EXERCISE_LIST.CLOSE' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div *ngIf="isDeleteModalOpen" class="modal-backdrop" (click)="onDeleteModalBackdropClick($event)">
+  <div class="modal-dialog delete-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          {{ 'EXERCISE_LIST.DELETE_CONFIRMATION' | translate }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          <strong>{{ 'EXERCISE_LIST.DELETE_WARNING' | translate }}</strong>
+        </div>
+
+        <p class="mb-3">{{ 'EXERCISE_LIST.DELETE_QUESTION' | translate }}</p>
+
+        <div *ngIf="exerciseToDelete" class="exercise-info">
+          <strong>{{ 'EXERCISE_LIST.DELETE_EXERCISE_NAME' | translate }}</strong>
+          <div class="exercise-name">{{ exerciseToDelete.name }}</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex gap-3 justify-content-end">
+          <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()" [disabled]="isDeletingExercise">
+            {{ 'EXERCISE_LIST.CANCEL' | translate }}
+          </button>
+          <button type="button" class="btn btn-danger" (click)="confirmDeleteExercise()"
+            [disabled]="isDeletingExercise">
+            <span *ngIf="isDeletingExercise" class="spinner-border spinner-border-sm me-2" role="status"></span>
+            {{ isDeletingExercise ? ('EXERCISE_LIST.DELETING' | translate) : ('EXERCISE_LIST.CONFIRM_DELETE' |
+            translate) }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

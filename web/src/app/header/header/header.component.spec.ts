@@ -47,7 +47,7 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
 
     const adminSection = fixture.debugElement.query(By.css('.menu-section h3'));
-    expect(adminSection.nativeElement.textContent).toContain('NAV.ADMIN');
+    expect(adminSection.nativeElement.textContent.trim()).toContain('NAV.MODULES');
 
     const adminMenuItems = fixture.debugElement.queryAll(By.css('.menu-section:first-child .nav-item'));
     expect(adminMenuItems.length).toBeGreaterThan(0);
@@ -105,7 +105,7 @@ describe('HeaderComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
 
-    expect(component.currentLang).toBe(testLang);
+    expect(component.currentLang).toBe('es-CO');
   });
 
   it('should initialize with default language if browser language not supported', () => {

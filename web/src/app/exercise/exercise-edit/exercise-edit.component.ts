@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,16 +9,19 @@ import { ExerciseDto } from 'src/app/dtos/exercise.dto';
 import { ExerciseBaseComponent } from '../exercise-base/exercise-base.component';
 
 @Component({
-  selector: 'app-exercise-create',
-  templateUrl: './exercise-create.component.html',
-  styleUrls: ['./exercise-create.component.css']
+  selector: 'app-exercise-edit',
+  templateUrl: './exercise-edit.component.html',
+  styleUrls: ['./exercise-edit.component.css']
 })
-export class ExerciseCreateComponent extends ExerciseBaseComponent implements OnInit {
+export class ExerciseEditComponent extends ExerciseBaseComponent implements OnInit {
   public exerciseForm: FormGroup;
   public isSubmitting = false;
+  public isLoading = true;
+  public exerciseId: string;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private toastr: ToastrService,
     private fb: FormBuilder,
     private translate: TranslateService,
@@ -28,7 +31,9 @@ export class ExerciseCreateComponent extends ExerciseBaseComponent implements On
   }
 
   ngOnInit(): void {
+    this.exerciseId = this.route.snapshot.params['id'];
     this.initializeForm();
+    this.loadExercise();
   }
 
   get formControls() {
@@ -48,6 +53,28 @@ export class ExerciseCreateComponent extends ExerciseBaseComponent implements On
     });
   }
 
+  loadExercise(): void {
+    this.exerciseService.getExerciseById(Number(this.exerciseId)).subscribe({
+      next: (exercise) => {
+        this.exerciseForm.patchValue({
+          name: exercise.name,
+          description: exercise.description,
+          calories: exercise.calories,
+          youtube: exercise.youtube
+        });
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.toastr.error(
+          this.translate.instant('EXERCISE_EDIT.ERROR_LOADING_MESSAGE'),
+          this.translate.instant('EXERCISE_EDIT.ERROR_LOADING_TITLE')
+        );
+        this.router.navigate(['/exercises']);
+      }
+    });
+  }
+
   onSubmit(): void {
     if (this.exerciseForm.invalid) {
       this.markFormGroupTouched();
@@ -59,22 +86,23 @@ export class ExerciseCreateComponent extends ExerciseBaseComponent implements On
       this.exerciseForm.value.name,
       this.exerciseForm.value.description,
       this.exerciseForm.value.calories,
-      this.exerciseForm.value.youtube
+      this.exerciseForm.value.youtube,
+      this.exerciseId
     );
 
-    this.exerciseService.createExercise(exerciseData).subscribe({
+    this.exerciseService.updateExercise(Number(this.exerciseId), exerciseData).subscribe({
       next: (response) => {
         this.toastr.success(
-          this.translate.instant('EXERCISE_CREATE.SUCCESS_MESSAGE'),
-          this.translate.instant('EXERCISE_CREATE.SUCCESS_TITLE')
+          this.translate.instant('EXERCISE_EDIT.SUCCESS_MESSAGE'),
+          this.translate.instant('EXERCISE_EDIT.SUCCESS_TITLE')
         );
         this.router.navigate(['/exercises']);
       },
       error: (error) => {
         this.isSubmitting = false;
         this.toastr.error(
-          this.translate.instant('EXERCISE_CREATE.ERROR_MESSAGE'),
-          this.translate.instant('EXERCISE_CREATE.ERROR_TITLE')
+          this.translate.instant('EXERCISE_EDIT.ERROR_MESSAGE'),
+          this.translate.instant('EXERCISE_EDIT.ERROR_TITLE')
         );
       }
     });

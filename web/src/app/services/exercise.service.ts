@@ -26,8 +26,30 @@ export class ExerciseService extends BaseService {
 
   createExercise(exercise: any): Observable<ExerciseDto> {
     return this.http.post<any>(
-      `${this.apiExerciseUrl}/create`,
+      `${this.apiExerciseUrl}/`,
       exercise,
+      { headers: this.defaultHeaders }
+    );
+  }
+
+  updateExercise(exerciseId: number, exercise: any): Observable<ExerciseDto> {
+    return this.http.put<any>(
+      `${this.apiExerciseUrl}/${exerciseId}`,
+      exercise,
+      { headers: this.defaultHeaders }
+    );
+  }
+
+  getExerciseById(exerciseId: number): Observable<ExerciseDto> {
+    return this.http.get<ExerciseDto>(
+      `${this.apiExerciseUrl}/${exerciseId}`,
+      { headers: this.defaultHeaders }
+    );
+  }
+
+  deleteExerciseById(exerciseId: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(
+      `${this.apiExerciseUrl}/${exerciseId}`,
       { headers: this.defaultHeaders }
     );
   }

@@ -20,6 +20,12 @@ export class ExerciseListComponent implements OnInit {
     total: 0,
     total_pages: 0,
   };
+  public selectedExercise: ExerciseDto | null = null;
+  public isModalOpen = false;
+  public isLoadingExerciseDetails = false;
+  public exerciseToDelete: ExerciseDto | null = null;
+  public isDeleteModalOpen = false;
+  public isDeletingExercise = false;
 
   constructor(
     private router: Router,
@@ -68,33 +74,78 @@ export class ExerciseListComponent implements OnInit {
   }
 
   viewExercise(exercise: ExerciseDto): void {
-    // TODO: Implementar vista de detalles del ejercicio
-    console.log('Ver ejercicio:', exercise);
-    this.toastr.info(
-      `${this.translate.instant('EXERCISE_LIST.VIEW')}: ${exercise.name}`,
-      this.translate.instant('EXERCISE_LIST.ACTIONS')
-    );
+    this.isLoadingExerciseDetails = true;
+    this.isModalOpen = true;
+
+    this.exerciseService.getExerciseById(Number(exercise.id)).subscribe({
+      next: (exerciseDetails) => {
+        this.selectedExercise = exerciseDetails;
+        this.isLoadingExerciseDetails = false;
+      },
+      error: (error) => {
+        this.isLoadingExerciseDetails = false;
+        this.closeModal();
+        this.toastr.error(
+          this.translate.instant('EXERCISE_LIST.ERROR_LOADING_EXERCISE'),
+          this.translate.instant('EXERCISE_LIST.ERROR_TITLE_EXERCISES')
+        );
+      }
+    });
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.selectedExercise = null;
+    this.isLoadingExerciseDetails = false;
+  }
+
+  onModalBackdropClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.closeModal();
+    }
   }
 
   editExercise(exercise: ExerciseDto): void {
-    // TODO: Navegar a la página de edición del ejercicio
-    console.log('Editar ejercicio:', exercise);
-    this.toastr.info(
-      `${this.translate.instant('EXERCISE_LIST.EDIT')}: ${exercise.name}`,
-      this.translate.instant('EXERCISE_LIST.ACTIONS')
-    );
+    this.router.navigate(['/exercises/edit', exercise.id]);
   }
 
   deleteExercise(exercise: ExerciseDto): void {
-    // TODO: Implementar confirmación y eliminación del ejercicio
-    console.log('Eliminar ejercicio:', exercise);
-    if (confirm(`¿Está seguro de eliminar el ejercicio "${exercise.name}"?`)) {
-      this.toastr.warning(
-        `${this.translate.instant('EXERCISE_LIST.DELETE')}: ${exercise.name}`,
-        this.translate.instant('EXERCISE_LIST.ACTIONS')
-      );
-      // Aquí iría la llamada al servicio para eliminar
-      // this.exerciseService.deleteExercise(exercise.id).subscribe(...)
+    this.exerciseToDelete = exercise;
+    this.isDeleteModalOpen = true;
+  }
+
+  confirmDeleteExercise(): void {
+    if (!this.exerciseToDelete) return;
+
+    this.isDeletingExercise = true;
+    this.exerciseService.deleteExerciseById(Number(this.exerciseToDelete.id)).subscribe({
+      next: (response) => {
+        this.toastr.success(
+          this.translate.instant('EXERCISE_LIST.DELETE_SUCCESS_MESSAGE'),
+          this.translate.instant('EXERCISE_LIST.DELETE_SUCCESS_TITLE')
+        );
+        this.closeDeleteModal();
+        this.listExercises();
+      },
+      error: (error) => {
+        this.isDeletingExercise = false;
+        this.toastr.error(
+          this.translate.instant('EXERCISE_LIST.DELETE_ERROR_MESSAGE'),
+          this.translate.instant('EXERCISE_LIST.DELETE_ERROR_TITLE')
+        );
+      }
+    });
+  }
+
+  closeDeleteModal(): void {
+    this.isDeleteModalOpen = false;
+    this.exerciseToDelete = null;
+    this.isDeletingExercise = false;
+  }
+
+  onDeleteModalBackdropClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.closeDeleteModal();
     }
   }
 }

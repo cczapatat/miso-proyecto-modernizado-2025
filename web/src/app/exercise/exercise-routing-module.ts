@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ExerciseListComponent } from './exercise-list/exercise-list.component';
 import { ExerciseCreateComponent } from './exercise-create/exercise-create.component';
+import { ExerciseEditComponent } from './exercise-edit/exercise-edit.component';
 
 const routes: Routes = [{
   path: 'exercises',
@@ -14,6 +15,10 @@ const routes: Routes = [{
     {
       path: 'create',
       component: ExerciseCreateComponent,
+    },
+    {
+      path: 'edit/:id',
+      component: ExerciseEditComponent,
     },
   ]
 }];

@@ -1,3 +1,4 @@
+/* Import styles from exercise-create to maintain consistency */
 body {
   background-color: #f8f9fa;
   font-family: Arial, sans-serif;
@@ -41,7 +42,7 @@ body {
 }
 
 /* Button styling following exercise-list color scheme */
-.create-btn {
+.update-btn {
   background-color: #984C0C;
   border-color: #984C0C;
   color: #fff;
@@ -52,7 +53,7 @@ body {
   min-width: 120px;
 }
 
-.create-btn:hover:not(:disabled) {
+.update-btn:hover:not(:disabled) {
   background-color: #653208;
   border-color: #653208;
   color: #fff;
@@ -60,13 +61,13 @@ body {
   box-shadow: 0 4px 8px rgba(152, 76, 12, 0.3);
 }
 
-.create-btn:focus {
+.update-btn:focus {
   background-color: #653208;
   border-color: #653208;
   box-shadow: 0 0 0 0.25rem rgba(152, 76, 12, 0.25);
 }
 
-.create-btn:disabled {
+.update-btn:disabled {
   background-color: #6c757d;
   border-color: #6c757d;
   opacity: 0.65;
@@ -111,6 +112,24 @@ textarea.form-control {
   font-weight: 500;
 }
 
+/* Loading spinner styling */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 /* Responsive design */
 @media (max-width: 576px) {
   .d-flex.gap-3 {
@@ -118,29 +137,8 @@ textarea.form-control {
     gap: 1rem !important;
   }
 
-  .create-btn,
+  .update-btn,
   .cancel-btn {
     width: 100%;
   }
-}
-
-.register-btn-active {
-  background-color: #FD7E14 !important;
-}
-
-.register-btn:hover {
-  font-weight: bold;
-}
-
-/* Estilos para placeholder */
-::placeholder {
-  color: #9FA1A9 !important;
-}
-
-:-ms-input-placeholder {
-  color: #9FA1A9 !important;
-}
-
-::-ms-input-placeholder {
-  color: #9FA1A9 !important;
 }

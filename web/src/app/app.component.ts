@@ -9,5 +9,5 @@ import { Router } from '@angular/router';
 export class AppComponent {
   public title = 'Web En Forma';
 
-  constructor (private router: Router) {}
+  constructor(private router: Router) { }
 }

@@ -5,8 +5,11 @@
 **/**/venv
 
 **/**.db
-**/__pycache__
-**/**/__pycache__
+**/__pycache__/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 postgres-data
 scripts

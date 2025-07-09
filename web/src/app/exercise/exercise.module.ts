@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ExerciseRoutingModule } from './exercise-routing-module';
 import { ExerciseListComponent } from './exercise-list/exercise-list.component';
 import { ExerciseCreateComponent } from './exercise-create/exercise-create.component';
+import { ExerciseEditComponent } from './exercise-edit/exercise-edit.component';
 
 @NgModule({
   imports: [
@@ -20,10 +21,12 @@ import { ExerciseCreateComponent } from './exercise-create/exercise-create.compo
   declarations: [
     ExerciseListComponent,
     ExerciseCreateComponent,
+    ExerciseEditComponent,
   ],
   exports: [
     ExerciseListComponent,
     ExerciseCreateComponent,
+    ExerciseEditComponent,
   ]
 })
 export class StoreModule { }
