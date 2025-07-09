@@ -1,0 +1,30 @@
+{
+  "NAV": {
+    "TITLE": "En Forma",
+    "MODULES": "Modules",
+    "USERS": "Users",
+    "EXERCISES": "Exercises",
+    "SETTINGS": "Config",
+    "LANGUAGES": "Languages"
+  },
+  "EXERCISE_LIST": {
+    "TITLE": "Exercise List",
+    "EXERCISES": "Exercises",
+    "CREATE_EXERCISE": "Create Exercise",
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "CALORIES": "Calories",
+    "YOUTUBE": "YouTube",
+    "WATCH_VIDEO": "Watch Video",
+    "ACTIONS": "Actions",
+    "ACTIONS_INFO": "View, edit or delete exercises",
+    "VIEW": "View",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "EMPTY_LIST": "There are no exercises available.",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next",
+    "ERROR_LIST_EXERCISES": "Error listing exercises",
+    "ERROR_TITLE_EXERCISES": "Error loading exercises"
+  }
+}

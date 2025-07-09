@@ -1,0 +1,30 @@
+{
+  "NAV": {
+    "TITLE": "En Forma",
+    "MODULES": "Módulos",
+    "USERS": "Usuarios",
+    "EXERCISES": "Ejercicios",
+    "SETTINGS": "Configuración",
+    "LANGUAGES": "Idiomas"
+  },
+  "EXERCISE_LIST": {
+    "TITLE": "Lista de Ejercicios",
+    "EXERCISES": "Ejercicios",
+    "CREATE_EXERCISE": "Crear Ejercicio",
+    "NAME": "Nombre",
+    "DESCRIPTION": "Descripción",
+    "CALORIES": "Calorías",
+    "YOUTUBE": "YouTube",
+    "WATCH_VIDEO": "Ver Video",
+    "ACTIONS": "Acciones",
+    "ACTIONS_INFO": "Ver, editar o eliminar ejercicios",
+    "VIEW": "Ver",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "EMPTY_LIST": "No hay ejercicios disponibles.",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente",
+    "ERROR_LIST_EXERCISES": "Error al listar los ejercicios",
+    "ERROR_TITLE_EXERCISES": "Error al cargar ejercicios"
+  }
+}
