@@ -4,6 +4,7 @@ from ..infrastructure.user_repository import UserRepository
 from ..models.user_model import User
 from datetime import datetime
 from ..config.db import db
+from ..infrastructure.user_repository import UserRepository, UserNotFoundError, RepositoryError, UserIntegrityError
 
 
 bp = Blueprint('users', __name__, url_prefix='/users')
@@ -25,7 +26,7 @@ def create_user():
         if not data.get(field):
             return jsonify({'message': f'{field} is required'}), 400
 
-    if not data['age'].isdigit() or int(data['age']) <= 0:
+    if not isinstance(data['age'], int) or data['age'] <= 0:
         return jsonify({'message': 'age must be a positive integer'}), 400
 
     numeric_fields = ['height', 'weight', 'arm', 'chest', 'waist', 'leg']
@@ -47,14 +48,19 @@ def create_user():
         withdrawal_reason=data.get('withdrawal_reason', '').strip()
     )
 
-    created = user_repository.create_user(user_dto)
-    if isinstance(created, User):
-        return jsonify(created.to_dict()), 201
-    return created
+    try:
+        created_user = user_repository.create_user(user_dto)
+        return jsonify(created_user.to_dict()), 201
+    except (UserIntegrityError, RepositoryError) as e: # pragma: no cover
+        return jsonify({"message": str(e)}), e.status_code
 
 @bp.route('/', methods=['GET'])
 def get_users():
-    return jsonify(user_repository.get_all_users()), 200
+    page = request.args.get('page', type=int, default=None)
+    per_page = request.args.get('per_page', type=int, default=None)
+
+    users_data = user_repository.get_all_users(page=page, per_page=per_page)
+    return jsonify(users_data), 200
 
 @bp.route('/<int:user_id>', methods=['GET'])
 def get_user(user_id):
@@ -75,8 +81,9 @@ def update_user(user_id):
         if not data.get(field):
             return jsonify({'message': f'{field} is required'}), 400
 
-    if not data['age'].isdigit() or int(data['age']) <= 0:
+    if not isinstance(data['age'], int) or data['age'] <= 0:
         return jsonify({'message': 'age must be a positive integer'}), 400
+
 
     numeric_fields = ['height', 'weight', 'arm', 'chest', 'waist', 'leg']
     for field in numeric_fields:
@@ -103,10 +110,13 @@ def update_user(user_id):
 
 @bp.route('/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
-    deleted = user_repository.delete_user(user_id)
-    if not deleted:
-        return jsonify({'message': 'user not found'}), 404
-    return jsonify({'message': 'user deleted'}), 200
+    try:
+        user_repository.delete_user(user_id)
+        return jsonify({'message': 'user deleted'}), 200
+    except UserNotFoundError as e:
+        return jsonify({'message': str(e)}), e.status_code
+    except RepositoryError as e: # pragma: no cover
+        return jsonify({'message': str(e)}), e.status_code
 
 @bp.route('/<int:user_id>/withdraw', methods=['PUT'])
 def withdraw_user(user_id):
@@ -140,4 +150,3 @@ def withdraw_user(user_id):
 @bp.route('/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'up'}), 200
-

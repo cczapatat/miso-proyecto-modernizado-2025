@@ -26,7 +26,7 @@ def get_uri_db() -> str:
     port = os.getenv('DB_PORT', default="5432")
     user = os.getenv('DB_USER', default="postgres")
     password = os.getenv('DB_PASSWORD', default="postgres")
-    db_name = os.getenv('DB_NAME', default="project_modernization")
+    db_name = os.getenv('DB_NAME', default="project_modernization_users")
     db_type = os.getenv('DB_TYPE', default="postgresql")
 
     return f'{db_type}://{user}:{password}@{host}:{port}/{db_name}' 
