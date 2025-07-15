@@ -175,7 +175,7 @@ def test_create_user_with_invalid_age_type(client, headers):
     }
     response = client.post('/users/', json=data, headers=headers)
     assert response.status_code == 400
-    assert response.json['message'] == 'age must be a positive integer'
+    assert response.json['message'] == 'age must be a positive number'
 
 def test_withdraw_user_with_missing_data(client, headers):
     create_data = { "name": "Para Retirar", "last_name": "Incompleto", "age": 50, "height": 1.70, "weight": 70, "arm": 25, "leg": 50, "chest": 90, "waist": 70 }
