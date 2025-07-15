@@ -25,11 +25,7 @@ def create_user():
     for field in required_fields:
         if not data.get(field):
             return jsonify({'message': f'{field} is required'}), 400
-
-    if not isinstance(data['age'], int) or data['age'] <= 0:
-        return jsonify({'message': 'age must be a positive integer'}), 400
-
-    numeric_fields = ['height', 'weight', 'arm', 'chest', 'waist', 'leg']
+    numeric_fields = ['age', 'height', 'weight', 'arm', 'chest', 'waist', 'leg']
     for field in numeric_fields:
         if not validate_positive_number(data[field]):
             return jsonify({'message': f'{field} must be a positive number'}), 400
@@ -37,13 +33,13 @@ def create_user():
     user_dto = UserDTO(
         name=data['name'].strip(),
         last_name=data['last_name'].strip(),
-        age=int(data['age']),
+        age=int(float(data['age'])), # Convertimos a int
         height=float(data['height']),
         weight=float(data['weight']),
-        arm=int(data['arm']),
-        chest=int(data['chest']),
-        waist=int(data['waist']),
-        leg=int(data['leg']),
+        arm=int(float(data['arm'])),
+        chest=int(float(data['chest'])),
+        waist=int(float(data['waist'])),
+        leg=int(float(data['leg'])),
         withdrawal_date=data.get('withdrawal_date', '').strip(),
         withdrawal_reason=data.get('withdrawal_reason', '').strip()
     )
@@ -71,8 +67,11 @@ def get_user(user_id):
 
 @bp.route('/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
-    if not user_repository.get_user_by_id(user_id):
-        return jsonify({'message': 'user not found'}), 404
+    try:
+        if not user_repository.get_user_by_id(user_id):
+             raise UserNotFoundError()
+    except UserNotFoundError as e:
+        return jsonify({'message': str(e)}), e.status_code
 
     data = request.get_json()
 
@@ -80,12 +79,7 @@ def update_user(user_id):
     for field in required_fields:
         if not data.get(field):
             return jsonify({'message': f'{field} is required'}), 400
-
-    if not isinstance(data['age'], int) or data['age'] <= 0:
-        return jsonify({'message': 'age must be a positive integer'}), 400
-
-
-    numeric_fields = ['height', 'weight', 'arm', 'chest', 'waist', 'leg']
+    numeric_fields = ['age', 'height', 'weight', 'arm', 'chest', 'waist', 'leg']
     for field in numeric_fields:
         if not validate_positive_number(data[field]):
             return jsonify({'message': f'{field} must be a positive number'}), 400
@@ -93,20 +87,22 @@ def update_user(user_id):
     user_dto = UserDTO(
         name=data['name'].strip(),
         last_name=data['last_name'].strip(),
-        age=int(data['age']),
+        age=int(float(data['age'])),
         height=float(data['height']),
         weight=float(data['weight']),
-        arm=int(data['arm']),
-        chest=int(data['chest']),
-        waist=int(data['waist']),
-        leg=int(data['leg']),
+        arm=int(float(data['arm'])),
+        chest=int(float(data['chest'])),
+        waist=int(float(data['waist'])),
+        leg=int(float(data['leg'])),
         withdrawal_date=data.get('withdrawal_date', '').strip(),
         withdrawal_reason=data.get('withdrawal_reason', '').strip()
     )
 
-    updated = user_repository.update_user(user_id, user_dto)
-    return jsonify(updated.to_dict()), 200
-
+    try:
+        updated_user = user_repository.update_user(user_id, user_dto)
+        return jsonify(updated_user.to_dict()), 200
+    except (UserNotFoundError, RepositoryError) as e: # pragma: no cover
+        return jsonify({'message': str(e)}), e.status_code
 
 @bp.route('/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
@@ -140,7 +136,7 @@ def withdraw_user(user_id):
 
     try:
         db.session.commit()
-    except Exception as e:
+    except Exception as e: # pragma: no cover
         db.session.rollback()
         return jsonify({'error': 'Error updating user', 'details': str(e)}), 500
 
