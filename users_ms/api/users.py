@@ -17,7 +17,7 @@ def validate_positive_number(value):
     except (ValueError, TypeError):
         return False
 
-@bp.route('/', methods=('POST',))
+@bp.route('/', methods=('POST',), strict_slashes=False)
 def create_user():
     data = request.get_json()
 
