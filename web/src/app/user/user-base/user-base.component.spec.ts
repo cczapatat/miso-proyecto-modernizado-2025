@@ -44,33 +44,33 @@ describe('UserBaseComponent', () => {
   });
 
   describe('getErrorMessage', () => {
-    it('should return "This field is required." for required error', () => {
+    it('should return "COMMON.VALIDATION.REQUIRED" for required error', () => {
       testForm.get('name')?.markAsTouched();
-      expect(component.getErrorMessage(testForm, 'name')).toBe('This field is required.');
+      expect(component.getErrorMessage(testForm, 'name')).toBe('COMMON.VALIDATION.REQUIRED');
     });
 
-    it('should return "Maximum length is X." for maxlength error', () => {
+    it('should return "COMMON.VALIDATION.MAX_LENGTH" for maxlength error', () => {
       testForm.get('name')?.setValue('a'.repeat(51));
       testForm.get('name')?.markAsTouched();
-      expect(component.getErrorMessage(testForm, 'name')).toBe('Maximum length is 50.');
+      expect(component.getErrorMessage(testForm, 'name')).toBe('COMMON.VALIDATION.MAX_LENGTH');
     });
 
-    it('should return "Please enter a positive number." for positiveNumber error', () => {
+    it('should return "COMMON.VALIDATION.POSITIVE_NUMBER" for positiveNumber error', () => {
       testForm.get('age')?.setValue(-10);
       testForm.get('age')?.markAsTouched();
-      expect(component.getErrorMessage(testForm, 'age')).toBe('Please enter a positive number.');
+      expect(component.getErrorMessage(testForm, 'age')).toBe('COMMON.VALIDATION.POSITIVE_NUMBER');
     });
 
-    it('should return "Invalid format." for pattern error (age not integer)', () => {
+    it('should return "COMMON.VALIDATION.INVALID_FORMAT" for pattern error (age not integer)', () => {
       testForm.get('age')?.setValue(10.5);
       testForm.get('age')?.markAsTouched();
-      expect(component.getErrorMessage(testForm, 'age')).toBe('Invalid format.');
+      expect(component.getErrorMessage(testForm, 'age')).toBe('COMMON.VALIDATION.INVALID_FORMAT');
     });
 
-    it('should return "Invalid format." for pattern error (email)', () => {
+    it('should return "COMMON.VALIDATION.INVALID_FORMAT" for pattern error (email)', () => {
       testForm.get('email')?.setValue('invalid-email');
       testForm.get('email')?.markAsTouched();
-      expect(component.getErrorMessage(testForm, 'email')).toBe('Invalid format.');
+      expect(component.getErrorMessage(testForm, 'email')).toBe('COMMON.VALIDATION.INVALID_FORMAT');
     });
 
     it('should return null if no errors', () => {

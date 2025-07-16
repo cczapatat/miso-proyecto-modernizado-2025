@@ -162,17 +162,17 @@ describe('UserCreateComponent', () => {
       // Test required
       component.userForm.get('name')?.setValue('');
       component.userForm.get('name')?.markAsTouched();
-      expect(component.getErrorMessage(component.userForm, 'name')).toBe('This field is required.');
+      expect(component.getErrorMessage(component.userForm, 'name')).toBe('COMMON.VALIDATION.REQUIRED');
 
       // Test positiveNumber
       component.userForm.get('age')?.setValue(-5);
       component.userForm.get('age')?.markAsTouched();
-      expect(component.getErrorMessage(component.userForm, 'age')).toBe('Please enter a positive number.');
+      expect(component.getErrorMessage(component.userForm, 'age')).toBe('COMMON.VALIDATION.POSITIVE_NUMBER');
 
       // Test pattern (age not integer)
       component.userForm.get('age')?.setValue(10.5);
       component.userForm.get('age')?.markAsTouched();
-      expect(component.getErrorMessage(component.userForm, 'age')).toBe('Invalid format.');
+      expect(component.getErrorMessage(component.userForm, 'age')).toBe('COMMON.VALIDATION.INVALID_FORMAT');
     });
   });
 

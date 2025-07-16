@@ -209,7 +209,7 @@ describe('UserEditComponent', () => {
     it('getErrorMessage should return correct messages', () => {
       component.userForm.get('name')?.setValue('');
       component.userForm.get('name')?.markAsTouched();
-      expect(component.getErrorMessage(component.userForm, 'name')).toBe('This field is required.');
+      expect(component.getErrorMessage(component.userForm, 'name')).toBe('COMMON.VALIDATION.REQUIRED');
     });
   });
 
