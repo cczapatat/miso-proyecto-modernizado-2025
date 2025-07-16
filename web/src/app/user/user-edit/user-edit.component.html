@@ -1,11 +1,6 @@
-<div class="container content">
-  <div class="row mb-4">
-    <div class="col-md-12">
-      <h2>{{ 'USER_EDIT.TITLE' | translate }}</h2>
-      <hr>
-    </div>
-  </div>
-
+<div class="container">
+  <h2 class="text-center title">{{ 'USER_EDIT.TITLE' | translate }}</h2>
+  
   <div *ngIf="isLoading" class="text-center mt-5">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">{{ 'COMMON.LOADING' | translate }}</span>
@@ -13,133 +8,173 @@
     <p>{{ 'COMMON.LOADING_DATA' | translate }}</p>
   </div>
 
-  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
-    <input type="hidden" formControlName="id">
+  <div class="form-container" *ngIf="!isLoading">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <input type="hidden" formControlName="id">
 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="mb-3">
-          <label for="name" class="form-label">{{ 'COMMON.FIELDS.NAME' | translate }}<span class="required">*</span></label>
-          <input type="text" class="form-control" id="name" formControlName="name"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'name')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'name')">
-            {{ getErrorMessage(userForm, 'name') | translate }}
+      <!-- Personal Information Section -->
+      <div class="section-header">
+        <h5 class="section-title">{{ 'USER_EDIT.PERSONAL_INFO' | translate }}</h5>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_name" class="form-label">{{ 'USER_EDIT.NAME' | translate }}</label>
+            <input id="user_name" type="text" class="form-control" formControlName="name"
+              [placeholder]="'USER_EDIT.NAME_PLACEHOLDER' | translate"
+              [class.is-invalid]="isFieldInvalid(userForm, 'name')">
+            <div id="user_name_error" *ngIf="isFieldInvalid(userForm, 'name')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'name') | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_last_name" class="form-label">{{ 'USER_EDIT.LAST_NAME' | translate }}</label>
+            <input id="user_last_name" type="text" class="form-control" formControlName="last_name"
+              [placeholder]="'USER_EDIT.LAST_NAME_PLACEHOLDER' | translate"
+              [class.is-invalid]="isFieldInvalid(userForm, 'last_name')">
+            <div id="user_last_name_error" *ngIf="isFieldInvalid(userForm, 'last_name')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'last_name') | translate }}
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="mb-3">
-          <label for="last_name" class="form-label">{{ 'COMMON.FIELDS.LAST_NAME' | translate }}<span class="required">*</span></label>
-          <input type="text" class="form-control" id="last_name" formControlName="last_name"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'last_name')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'last_name')">
-            {{ getErrorMessage(userForm, 'last_name') | translate }}
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="age" class="form-label">{{ 'COMMON.FIELDS.AGE' | translate }}<span class="required">*</span></label>
-          <input type="number" class="form-control" id="age" formControlName="age"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'age')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'age')">
-            {{ getErrorMessage(userForm, 'age') | translate }}
+      <!-- Basic Measurements Section -->
+      <div class="section-header">
+        <h5 class="section-title">{{ 'USER_EDIT.BASIC_MEASUREMENTS' | translate }}</h5>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_age" class="form-label">{{ 'USER_EDIT.AGE' | translate }}</label>
+            <input id="user_age" type="number" class="form-control" formControlName="age"
+              [placeholder]="'USER_EDIT.AGE_PLACEHOLDER' | translate" min="1"
+              [class.is-invalid]="isFieldInvalid(userForm, 'age')">
+            <div id="user_age_error" *ngIf="isFieldInvalid(userForm, 'age')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'age') | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_height" class="form-label">{{ 'USER_EDIT.HEIGHT' | translate }}</label>
+            <input id="user_height" type="number" step="0.01" class="form-control" formControlName="height"
+              [placeholder]="'USER_EDIT.HEIGHT_PLACEHOLDER' | translate" min="0.01"
+              [class.is-invalid]="isFieldInvalid(userForm, 'height')">
+            <div id="user_height_error" *ngIf="isFieldInvalid(userForm, 'height')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'height') | translate }}
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="height" class="form-label">{{ 'COMMON.FIELDS.HEIGHT' | translate }}<span class="required">*</span></label>
-          <input type="number" step="0.01" class="form-control" id="height" formControlName="height"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'height')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'height')">
-            {{ getErrorMessage(userForm, 'height') | translate }}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="weight" class="form-label">{{ 'COMMON.FIELDS.WEIGHT' | translate }}<span class="required">*</span></label>
-          <input type="number" step="0.1" class="form-control" id="weight" formControlName="weight"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'weight')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'weight')">
-            {{ getErrorMessage(userForm, 'weight') | translate }}
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="arm" class="form-label">{{ 'COMMON.FIELDS.ARM' | translate }}<span class="required">*</span></label>
-          <input type="number" step="0.1" class="form-control" id="arm" formControlName="arm"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'arm')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'arm')">
-            {{ getErrorMessage(userForm, 'arm') | translate }}
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_weight" class="form-label">{{ 'USER_EDIT.WEIGHT' | translate }}</label>
+            <input id="user_weight" type="number" step="0.1" class="form-control" formControlName="weight"
+              [placeholder]="'USER_EDIT.WEIGHT_PLACEHOLDER' | translate" min="0.1"
+              [class.is-invalid]="isFieldInvalid(userForm, 'weight')">
+            <div id="user_weight_error" *ngIf="isFieldInvalid(userForm, 'weight')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'weight') | translate }}
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="chest" class="form-label">{{ 'COMMON.FIELDS.CHEST' | translate }}<span class="required">*</span></label>
-          <input type="number" step="0.1" class="form-control" id="chest" formControlName="chest"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'chest')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'chest')">
-            {{ getErrorMessage(userForm, 'chest') | translate }}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="waist" class="form-label">{{ 'COMMON.FIELDS.WAIST' | translate }}<span class="required">*</span></label>
-          <input type="number" step="0.1" class="form-control" id="waist" formControlName="waist"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'waist')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'waist')">
-            {{ getErrorMessage(userForm, 'waist') | translate }}
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="leg" class="form-label">{{ 'COMMON.FIELDS.LEG' | translate }}<span class="required">*</span></label>
-          <input type="number" step="0.1" class="form-control" id="leg" formControlName="leg"
-                 [class.is-invalid]="isFieldInvalid(userForm, 'leg')">
-          <div class="invalid-feedback" *ngIf="isFieldInvalid(userForm, 'leg')">
-            {{ getErrorMessage(userForm, 'leg') | translate }}
+      <!-- Body Measurements Section -->
+      <div class="section-header">
+        <h5 class="section-title">{{ 'USER_EDIT.BODY_MEASUREMENTS' | translate }}</h5>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_arm" class="form-label">{{ 'USER_EDIT.ARM' | translate }}</label>
+            <input id="user_arm" type="number" step="0.1" class="form-control" formControlName="arm"
+              [placeholder]="'USER_EDIT.ARM_PLACEHOLDER' | translate" min="0.1"
+              [class.is-invalid]="isFieldInvalid(userForm, 'arm')">
+            <div id="user_arm_error" *ngIf="isFieldInvalid(userForm, 'arm')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'arm') | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_chest" class="form-label">{{ 'USER_EDIT.CHEST' | translate }}</label>
+            <input id="user_chest" type="number" step="0.1" class="form-control" formControlName="chest"
+              [placeholder]="'USER_EDIT.CHEST_PLACEHOLDER' | translate" min="0.1"
+              [class.is-invalid]="isFieldInvalid(userForm, 'chest')">
+            <div id="user_chest_error" *ngIf="isFieldInvalid(userForm, 'chest')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'chest') | translate }}
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="withdrawal_date" class="form-label">{{ 'COMMON.FIELDS.WITHDRAWAL_DATE' | translate }}</label>
-          <input type="date" class="form-control" id="withdrawal_date" formControlName="withdrawal_date">
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="mb-3">
-          <label for="withdrawal_reason" class="form-label">{{ 'COMMON.FIELDS.WITHDRAWAL_REASON' | translate }}</label>
-          <textarea class="form-control" id="withdrawal_reason" formControlName="withdrawal_reason" rows="3"></textarea>
-        </div>
-      </div>
-    </div>
 
-    <div class="row mt-4">
-      <div class="col-md-12 text-end">
-        <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">
-          {{ 'COMMON.CANCEL' | translate }}
-        </button>
-        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || userForm.invalid">
-          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          {{ 'COMMON.SAVE_CHANGES' | translate }}
-        </button>
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_waist" class="form-label">{{ 'USER_EDIT.WAIST' | translate }}</label>
+            <input id="user_waist" type="number" step="0.1" class="form-control" formControlName="waist"
+              [placeholder]="'USER_EDIT.WAIST_PLACEHOLDER' | translate" min="0.1"
+              [class.is-invalid]="isFieldInvalid(userForm, 'waist')">
+            <div id="user_waist_error" *ngIf="isFieldInvalid(userForm, 'waist')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'waist') | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_leg" class="form-label">{{ 'USER_EDIT.LEG' | translate }}</label>
+            <input id="user_leg" type="number" step="0.1" class="form-control" formControlName="leg"
+              [placeholder]="'USER_EDIT.LEG_PLACEHOLDER' | translate" min="0.1"
+              [class.is-invalid]="isFieldInvalid(userForm, 'leg')">
+            <div id="user_leg_error" *ngIf="isFieldInvalid(userForm, 'leg')" class="text-danger mt-1">
+              {{ getErrorMessage(userForm, 'leg') | translate }}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </form>
+
+      <!-- Additional Information Section -->
+      <div class="section-header">
+        <h5 class="section-title">{{ 'USER_EDIT.ADDITIONAL_INFO' | translate }}</h5>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_withdrawal_date" class="form-label">{{ 'USER_EDIT.WITHDRAWAL_DATE' | translate }}</label>
+            <input id="user_withdrawal_date" type="date" class="form-control" formControlName="withdrawal_date">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="user_withdrawal_reason" class="form-label">{{ 'USER_EDIT.WITHDRAWAL_REASON' | translate }}</label>
+            <textarea id="user_withdrawal_reason" class="form-control" formControlName="withdrawal_reason" 
+              rows="3" [placeholder]="'USER_EDIT.WITHDRAWAL_REASON_PLACEHOLDER' | translate"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="text-center">
+        <div class="d-flex gap-3 justify-content-center">
+          <button id="user_btn_cancel" type="button" class="btn cancel-btn" (click)="onCancel()">
+            {{ 'USER_EDIT.CANCEL' | translate }}
+          </button>
+          <button id="user_btn_save" type="submit" class="btn save-btn"
+            [disabled]="userForm.invalid || isSubmitting">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+            {{ 'USER_EDIT.SAVE' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

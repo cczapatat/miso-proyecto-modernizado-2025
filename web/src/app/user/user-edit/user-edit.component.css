@@ -1,10 +1,153 @@
-.form-label {
-  font-weight: bold;
+body {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
 }
 
+.container {
+  max-width: 900px;
+  margin-top: 40px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #5a2d0c;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section styling for better organization */
+.section-header {
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+}
+
+.section-header:first-child {
+  margin-top: 0;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #984C0C;
+  margin-bottom: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #984C0C;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background-color: #653208;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #984C0C;
+}
+
+.form-control,
+.form-select {
+  border: 2px solid #984C0C;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #653208;
+  box-shadow: 0 0 0 .25rem rgba(101, 50, 8, 0.25);
+}
+
+/* Button styling following exercise-create color scheme */
+.save-btn {
+  background-color: #984C0C;
+  border-color: #984C0C;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+  min-width: 120px;
+}
+
+.save-btn:hover:not(:disabled) {
+  background-color: #653208;
+  border-color: #653208;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(152, 76, 12, 0.3);
+}
+
+.save-btn:focus {
+  background-color: #653208;
+  border-color: #653208;
+  box-shadow: 0 0 0 0.25rem rgba(152, 76, 12, 0.25);
+}
+
+.save-btn:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  border: 2px solid #6c757d;
+  color: #6c757d;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+  min-width: 120px;
+}
+
+.cancel-btn:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* Form improvements */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Error message styling */
+.text-danger {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Enhanced spacing between sections */
+.mb-4 {
+  margin-bottom: 2rem !important;
+}
+
+.row.mb-4:last-of-type {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Remove old styles that don't match exercise pattern */
 .required {
-  color: red;
-  margin-left: 5px;
+  display: none; /* Hide required asterisk to match exercise style */
 }
 
 .form-control.is-invalid {
@@ -29,32 +172,56 @@
   color: #dc3545;
 }
 
-.btn-primary {
-  background-color: #A34700; /* Custom primary button color */
-  border-color: #A34700;
-}
-
-.btn-primary:hover {
-  background-color: #CA6510;
-  border-color: #CA6510;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
-  border-color: #545b62;
-}
-
-.spinner-border-sm {
-  width: 1rem;
-  height: 1rem;
-  border-width: 0.15em;
-}
-
 .spinner-border.text-primary {
-  color: #A34700 !important; /* Ensure the spinner uses the primary brand color */
+  color: #984C0C !important; /* Ensure the spinner uses the primary brand color */
+}
+
+/* Estilos para placeholder */
+::placeholder {
+  color: #9FA1A9 !important;
+}
+
+:-ms-input-placeholder {
+  color: #9FA1A9 !important;
+}
+
+::-ms-input-placeholder {
+  color: #9FA1A9 !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+  
+  .form-container {
+    padding: 20px;
+  }
+  
+  .section-header {
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .d-flex.gap-3 {
+    flex-direction: column;
+    gap: 1rem !important;
+  }
+
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 24px;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+  }
 }

@@ -55,14 +55,14 @@ export class UserCreateComponent extends UserBaseComponent implements OnInit, On
       const sub = this.userService.createUser(newUser).subscribe({
         next: () => {
           this.translate.get('USER_CREATE.USER_CREATED_SUCCESS').subscribe((res: string) => {
-            this.toastr.success(res, this.translate.instant('SUCCESS'));
+            this.toastr.success(res, this.translate.instant('COMMON.SUCCESS'));
           });
           this.router.navigate(['/users']);
         },
         error: (error) => {
           console.error('Error creating user:', error);
           this.translate.get('USER_CREATE.ERROR_CREATING_USER').subscribe((res: string) => {
-            this.toastr.error(res, this.translate.instant('ERROR'));
+            this.toastr.error(res, this.translate.instant('COMMON.ERROR'));
           });
           this.isSubmitting = false;
         }
@@ -71,7 +71,7 @@ export class UserCreateComponent extends UserBaseComponent implements OnInit, On
     } else {
       this.userForm.markAllAsTouched(); // Mark all fields as touched to display validation messages
       this.translate.get('COMMON.FORM_INVALID_MESSAGE').subscribe((res: string) => {
-        this.toastr.error(res, this.translate.instant('ERROR'));
+        this.toastr.error(res, this.translate.instant('COMMON.ERROR'));
       });
     }
   }

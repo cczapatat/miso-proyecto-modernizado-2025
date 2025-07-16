@@ -19,25 +19,25 @@ export class UserBaseComponent {
    * Gets the error message for a specific form control.
    * @param form The FormGroup instance.
    * @param controlName The name of the form control.
-   * @returns The error message string or null if no error.
+   * @returns The translation key for the error message or null if no error.
    */
   getErrorMessage(form: FormGroup, controlName: string): string | null {
     const control = form.get(controlName);
     if (control && control.errors) {
       if (control.errors['required']) {
-        return 'This field is required.';
+        return 'COMMON.VALIDATION.REQUIRED';
       }
       if (control.errors['minlength']) {
-        return `Minimum length is ${control.errors['minlength'].requiredLength}.`;
+        return 'COMMON.VALIDATION.MIN_LENGTH';
       }
       if (control.errors['maxlength']) {
-        return `Maximum length is ${control.errors['maxlength'].requiredLength}.`;
+        return 'COMMON.VALIDATION.MAX_LENGTH';
       }
       if (control.errors['positiveNumber']) {
-        return 'Please enter a positive number.';
+        return 'COMMON.VALIDATION.POSITIVE_NUMBER';
       }
       if (control.errors['pattern']) {
-        return 'Invalid format.';
+        return 'COMMON.VALIDATION.INVALID_FORMAT';
       }
     }
     return null;

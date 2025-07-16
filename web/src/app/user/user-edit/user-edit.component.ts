@@ -56,7 +56,7 @@ export class UserEditComponent extends UserBaseComponent implements OnInit, OnDe
         this.loadUserData(this.userId);
       } else {
         this.translate.get('USER_EDIT.ERROR_INVALID_ID').subscribe((res: string) => {
-          this.toastr.error(res, this.translate.instant('ERROR'));
+          this.toastr.error(res, this.translate.instant('COMMON.ERROR'));
         });
         this.router.navigate(['/users']);
       }
@@ -74,7 +74,7 @@ export class UserEditComponent extends UserBaseComponent implements OnInit, OnDe
       error: (error) => {
         console.error('Error loading user data:', error);
         this.translate.get('USER_EDIT.ERROR_LOADING_USER').subscribe((res: string) => {
-          this.toastr.error(res, this.translate.instant('ERROR'));
+          this.toastr.error(res, this.translate.instant('COMMON.ERROR'));
         });
         this.router.navigate(['/users']);
         this.isLoading = false;
@@ -92,14 +92,14 @@ export class UserEditComponent extends UserBaseComponent implements OnInit, OnDe
       const sub = this.userService.updateUser(this.userId, updatedUser).subscribe({
         next: () => {
           this.translate.get('USER_EDIT.USER_UPDATED_SUCCESS').subscribe((res: string) => {
-            this.toastr.success(res, this.translate.instant('SUCCESS'));
+            this.toastr.success(res, this.translate.instant('COMMON.SUCCESS'));
           });
           this.router.navigate(['/users']);
         },
         error: (error) => {
           console.error('Error updating user:', error);
           this.translate.get('USER_EDIT.ERROR_UPDATING_USER').subscribe((res: string) => {
-            this.toastr.error(res, this.translate.instant('ERROR'));
+            this.toastr.error(res, this.translate.instant('COMMON.ERROR'));
           });
           this.isSubmitting = false;
         }
@@ -108,7 +108,7 @@ export class UserEditComponent extends UserBaseComponent implements OnInit, OnDe
     } else {
       this.userForm.markAllAsTouched();
       this.translate.get('COMMON.FORM_INVALID_MESSAGE').subscribe((res: string) => {
-        this.toastr.error(res, this.translate.instant('ERROR'));
+        this.toastr.error(res, this.translate.instant('COMMON.ERROR'));
       });
     }
   }
