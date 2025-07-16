@@ -18,10 +18,10 @@ This is the easiest and most consistent way to get the project running, as Docke
     This command will:
     - Build the Docker image for the users microservice.
     - Start the PostgreSQL database container.
-    - Start the users service, making it available on port 3006.
+    - Start the users service, making it available on port 3005.
 
 2.  **Access the API:**
-    You can now access the API at: `http://localhost:3006/users`
+    You can now access the API at: `http://localhost:3005/users`
 
 3.  **Stop the services:**
     To stop and remove the containers, press `Ctrl + C` in the terminal and then run:
@@ -44,7 +44,7 @@ This method is quick for development but requires you to have PostgreSQL install
 2.  **Run the Flask Server:**
     From the project's root directory (and with your Python virtual environment activated), run:
     ```bash
-    flask --app . run --host=0.0.0.0 --port=3006
+    flask --app . run --host=0.0.0.0 --port=3005
     ```
 
 ---
