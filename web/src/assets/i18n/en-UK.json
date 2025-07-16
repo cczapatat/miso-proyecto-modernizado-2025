@@ -92,6 +92,12 @@
   },
   "USER_LIST": {
     "TITLE": "User List",
+    "NEXT": "Next",
+    "PREVIOUS": "Previous",
+    "VIEW": "View",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "WITHDRAWN": "Withdrawn",
     "CREATE_BUTTON": "Create User",
     "TABLE_HEADER": {
       "NAME": "Name",

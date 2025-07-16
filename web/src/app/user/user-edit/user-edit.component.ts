@@ -44,6 +44,8 @@ export class UserEditComponent extends UserBaseComponent implements OnInit, OnDe
       chest: [null, [Validators.required, positiveNumberValidator]],
       waist: [null, [Validators.required, positiveNumberValidator]],
       leg: [null, [Validators.required, positiveNumberValidator]],
+      created_at: [''],
+      updated_at: [''],
       withdrawal_date: [''],
       withdrawal_reason: ['']
     });
