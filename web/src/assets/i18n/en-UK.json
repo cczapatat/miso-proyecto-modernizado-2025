@@ -89,5 +89,89 @@
     "MIN_VALUE": "Value must be greater than zero",
     "INVALID_NUMBER": "Enter a valid number",
     "INVALID_YOUTUBE_URL": "Enter a valid YouTube URL"
+  },
+  "USER_LIST": {
+    "TITLE": "User List",
+    "CREATE_BUTTON": "Create User",
+    "TABLE_HEADER": {
+      "NAME": "Name",
+      "LAST_NAME": "Last Name",
+      "AGE": "Age",
+      "HEIGHT": "Height",
+      "WEIGHT": "Weight",
+      "ARM": "Arm",
+      "CHEST": "Chest",
+      "WAIST": "Waist",
+      "LEG": "Leg",
+      "WITHDRAWN": "Withdrawn",
+      "ACTIONS": "Actions"
+    },
+    "NO_USERS_FOUND": "No users found.",
+    "ERROR_LOADING_USERS": "Error loading users",
+    "USER_DELETED_SUCCESS": "User deleted successfully",
+    "ERROR_DELETING_USER": "Error deleting user",
+    "USER_WITHDRAWN_SUCCESS": "User withdrawn successfully",
+    "ERROR_WITHDRAWING_USER": "Error withdrawing user",
+    "DEFAULT_WITHDRAWAL_REASON": "User voluntarily withdrew",
+    "MODAL": {
+      "VIEW_TITLE": "User Details",
+      "NAME": "Name",
+      "LAST_NAME": "Last Name",
+      "AGE": "Age",
+      "HEIGHT": "Height",
+      "WEIGHT": "Weight",
+      "ARM": "Arm",
+      "CHEST": "Chest",
+      "WAIST": "Waist",
+      "LEG": "Leg",
+      "CREATED_AT": "Created At",
+      "UPDATED_AT": "Updated At",
+      "WITHDRAWAL_STATUS": "Withdrawal Status",
+      "WITHDRAWAL_DATE": "Withdrawal Date",
+      "WITHDRAWAL_REASON": "Withdrawal Reason",
+      "DELETE_TITLE": "Confirm Deletion",
+      "DELETE_CONFIRMATION": "Are you sure you want to delete user",
+      "WITHDRAW_TITLE": "Confirm User Withdrawal",
+      "WITHDRAW_CONFIRMATION": "Are you sure you want to withdraw user",
+      "WITHDRAW_NOTICE": "This action marks the user as withdrawn.",
+      "CONFIRM_WITHDRAW": "Withdraw"
+    }
+  },
+  "USER_CREATE": {
+    "TITLE": "Create User",
+    "USER_CREATED_SUCCESS": "User created successfully",
+    "ERROR_CREATING_USER": "Error creating user"
+  },
+  "USER_EDIT": {
+    "TITLE": "Edit User",
+    "ERROR_INVALID_ID": "Invalid user ID provided",
+    "ERROR_LOADING_USER": "Error loading user data",
+    "USER_UPDATED_SUCCESS": "User updated successfully",
+    "ERROR_UPDATING_USER": "Error updating user"
+  },
+  "COMMON": {
+    "FIELDS": {
+      "NAME": "Name",
+      "LAST_NAME": "Last Name",
+      "AGE": "Age",
+      "HEIGHT": "Height",
+      "WEIGHT": "Weight",
+      "ARM": "Arm",
+      "CHEST": "Chest",
+      "WAIST": "Waist",
+      "LEG": "Leg",
+      "WITHDRAWAL_DATE": "Withdrawal Date",
+      "WITHDRAWAL_REASON": "Withdrawal Reason"
+    },
+    "SUCCESS": "Success",
+    "ERROR": "Error",
+    "CLOSE": "Close",
+    "CANCEL": "Cancel",
+    "DELETE": "Delete",
+    "SAVE": "Save",
+    "SAVE_CHANGES": "Save Changes",
+    "LOADING": "Loading",
+    "LOADING_DATA": "Loading data...",
+    "FORM_INVALID_MESSAGE": "Please correct the errors in the form."
   }
 }

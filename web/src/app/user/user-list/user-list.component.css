@@ -1,0 +1,108 @@
+.table-responsive {
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table th:first-child, .table td:first-child {
+  text-align: left; /* Align ID to left */
+}
+
+.table th:nth-child(2), .table td:nth-child(2), /* Name */
+.table th:nth-child(3), .table td:nth-child(3), /* Last Name */
+.table th:nth-child(4), .table td:nth-child(4) /* Age */ {
+  text-align: left;
+}
+
+.table thead th {
+  background-color: #f8f9fa; /* Light background for headers */
+  border-bottom: 2px solid #dee2e6;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
+/* Custom button styles for better visibility based on theme */
+.btn-outline-info {
+  color: #17a2b8;
+  border-color: #17a2b8;
+}
+.btn-outline-info:hover {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.btn-outline-warning {
+  color: #ffc107;
+  border-color: #ffc107;
+}
+.btn-outline-warning:hover {
+  color: #212529;
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+.btn-outline-danger:hover {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+}
+.btn-outline-secondary:hover {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-primary {
+  background-color: #A34700; /* Custom primary button color */
+  border-color: #A34700;
+}
+
+.btn-primary:hover {
+  background-color: #CA6510;
+  border-color: #CA6510;
+}
+
+/* Pagination styles */
+.pagination .page-item .page-link {
+  color: #A34700; /* Link color */
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #A34700; /* Active page background */
+  border-color: #A34700;
+  color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+}
+
+/* Modal specific styles */
+.modal-body strong {
+  color: #343a40;
+}
+
+.badge {
+  padding: 0.5em 0.7em;
+  font-size: 0.75em;
+  font-weight: bold;
+  border-radius: 0.25rem;
+}
