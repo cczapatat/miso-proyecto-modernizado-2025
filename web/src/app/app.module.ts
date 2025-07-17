@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 
 import { HeaderModule } from './header/header.module';
 import { StoreModule } from './exercise/exercise.module';
+import { UserModule } from './user/user.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { HomeRoutingModule } from './home/home-routing-module';
@@ -36,6 +37,7 @@ export function createTranslateLoader(http: HttpClient) {
 
     HeaderModule,
     StoreModule,
+    UserModule,
 
     AppRoutingModule,
     HomeRoutingModule,

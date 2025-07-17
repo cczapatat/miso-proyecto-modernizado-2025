@@ -1,0 +1,223 @@
+body {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 900px;
+  margin-top: 40px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #5a2d0c;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section styling for better organization */
+.section-header {
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
+}
+
+.section-header:first-child {
+  margin-top: 0;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #984C0C;
+  margin-bottom: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #984C0C;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background-color: #653208;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #984C0C;
+}
+
+.form-control,
+.form-select {
+  border: 2px solid #984C0C;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #653208;
+  box-shadow: 0 0 0 .25rem rgba(101, 50, 8, 0.25);
+}
+
+/* Button styling following exercise-create color scheme */
+.create-btn {
+  background-color: #984C0C;
+  border-color: #984C0C;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+  min-width: 120px;
+}
+
+.create-btn:hover:not(:disabled) {
+  background-color: #653208;
+  border-color: #653208;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(152, 76, 12, 0.3);
+}
+
+.create-btn:focus {
+  background-color: #653208;
+  border-color: #653208;
+  box-shadow: 0 0 0 0.25rem rgba(152, 76, 12, 0.25);
+}
+
+.create-btn:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  border: 2px solid #6c757d;
+  color: #6c757d;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+  min-width: 120px;
+}
+
+.cancel-btn:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* Form improvements */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Error message styling */
+.text-danger {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Enhanced spacing between sections */
+.mb-4 {
+  margin-bottom: 2rem !important;
+}
+
+.row.mb-4:last-of-type {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+  
+  .form-container {
+    padding: 20px;
+  }
+  
+  .section-header {
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .d-flex.gap-3 {
+    flex-direction: column;
+    gap: 1rem !important;
+  }
+
+  .create-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 24px;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Estilos para placeholder */
+::placeholder {
+  color: #9FA1A9 !important;
+}
+
+:-ms-input-placeholder {
+  color: #9FA1A9 !important;
+}
+
+::-ms-input-placeholder {
+  color: #9FA1A9 !important;
+}
+
+/* Remove old styles that don't match exercise pattern */
+.required {
+  display: none; /* Hide required asterisk to match exercise style */
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control.is-invalid:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+  display: block; /* Make sure it's always displayed when needed */
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}

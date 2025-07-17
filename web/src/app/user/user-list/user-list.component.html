@@ -1,0 +1,281 @@
+<div class="container-fluid col-md-8">
+  <h2 class="text-center title" style="margin: 2rem 0;">{{ 'USER_LIST.TITLE' | translate }}</h2>
+
+  <div class="row">
+    <div class="col-md-9">
+      <h2 class="title_second">{{ 'USER_LIST.TITLE' | translate }}</h2>
+    </div>
+    <div class="col-md-3">
+      <button id="btn_go_user_create" class="btn btn-sm btn-primary col-md-12"
+        (click)="navigate('/users/create')">{{ 'USER_LIST.CREATE_BUTTON' | translate }}</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Users Section -->
+    <div class="col-md-12">
+
+      <table id="usersTable" class="table custom-bordered-table">
+        <thead>
+          <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">{{ 'USER_LIST.TABLE_HEADER.NAME' | translate }}</th>
+            <th class="text-center">{{ 'USER_LIST.TABLE_HEADER.LAST_NAME' | translate }}</th>
+            <th class="text-center">{{ 'USER_LIST.TABLE_HEADER.AGE' | translate }}</th>
+            <th class="text-center">
+              {{ 'USER_LIST.TABLE_HEADER.ACTIONS' | translate }}
+              <i class="bi bi-info-circle" [title]="'USER_LIST.ACTIONS_INFO' | translate"></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="users.length > 0; else noUsers">
+            <!-- Render Users -->
+            <tr *ngFor="let user of users">
+              <td class="text-center fw-bold">{{ user.id }}</td>
+              <td class="text-center fw-bold">{{ user.name }}</td>
+              <td class="text-center">{{ user.last_name }}</td>
+              <td class="text-center">{{ user.age }}</td>
+              <td class="text-center">
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-outline-info btn-sm" [title]="'USER_LIST.VIEW' | translate"
+                    (click)="openDetailModal(user)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-warning btn-sm"
+                    [title]="'USER_LIST.EDIT' | translate" (click)="navigateToEdit(user.id!)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm"
+                    [title]="'USER_LIST.DELETE' | translate" (click)="openDeleteModal(user)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm"
+                    [title]="'USER_LIST.WITHDRAW' | translate" (click)="openWithdrawModal(user)" [disabled]="user.withdrawal_date">
+                    <i class="bi bi-person-x"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Empty filler rows to keep table height consistent -->
+            <tr *ngFor="let i of [].constructor(10 - users.length)" class="empty-row">
+              <td colspan="5">&nbsp;</td>
+            </tr>
+          </ng-container>
+
+          <!-- Message when no users -->
+          <ng-template #noUsers>
+            <tr *ngFor="let i of [].constructor(4)" class="empty-row">
+              <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr class="empty-row">
+              <td colspan="5" class="no-data-message align-middle text-muted fw-bold">{{ 'USER_LIST.NO_USERS_FOUND' | translate }}</td>
+            </tr>
+            <tr *ngFor="let i of [].constructor(5)" class="empty-row">
+              <td colspan="5">&nbsp;</td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+
+      <div class="btn-group">
+        <!-- Previous -->
+        <button class="pagination-button" [disabled]="page <= 1" (click)="changeUserPage(-1)">
+          <i class="bi bi-arrow-left"></i>{{ 'USER_LIST.PREVIOUS' | translate }}
+        </button>
+
+        <!-- Page buttons -->
+        <div class="inner-page-group">
+          <button *ngFor="let p of getPaginationUserPages(page, totalPages)"
+            class="pagination-button" [ngClass]="{
+              'active': p === page,
+              'ellipsis': p === '...'
+            }" (click)="onClickUserPage(p)" [disabled]="p === '...'">
+            {{ p }}
+          </button>
+        </div>
+
+        <!-- Next -->
+        <button class="pagination-button" [disabled]="page >= totalPages"
+          (click)="changeUserPage(1)">
+          {{ 'USER_LIST.NEXT' | translate }}<i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- User Details Modal -->
+<div *ngIf="isModalOpen" class="modal-backdrop" (click)="onModalBackdropClick($event)">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ 'USER_LIST.MODAL.VIEW_TITLE' | translate }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Loading spinner -->
+        <div *ngIf="isLoadingUserDetails" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">{{ 'USER_LIST.LOADING_DETAILS' | translate }}</span>
+          </div>
+          <p class="mt-2">{{ 'USER_LIST.LOADING_DETAILS' | translate }}</p>
+        </div>
+
+        <!-- User details -->
+        <div *ngIf="!isLoadingUserDetails && selectedUser" class="user-details">
+          <div class="detail-row">
+            <strong class="detail-label">ID:</strong>
+            <span class="detail-value">{{ selectedUser.id }}</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.NAME' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.name }} {{ selectedUser.last_name }}</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.AGE' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.age }}</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.HEIGHT' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.height | number:'1.2-2' }} m</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.WEIGHT' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.weight | number:'1.2-2' }} kg</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.ARM' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.arm | number:'1.1-1' }} cm</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.CHEST' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.chest | number:'1.1-1' }} cm</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.WAIST' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.waist | number:'1.1-1' }} cm</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.LEG' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.leg | number:'1.1-1' }} cm</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.CREATED_AT' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.created_at | date:'medium' }}</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.UPDATED_AT' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.updated_at | date:'medium' }}</span>
+          </div>
+
+          <div class="detail-row">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.WITHDRAWAL_STATUS' | translate }}:</strong>
+            <span class="detail-value">
+              <span class="badge" [ngClass]="{'bg-success': !selectedUser.withdrawal_date, 'bg-danger': selectedUser.withdrawal_date}">
+                {{ selectedUser.withdrawal_date ? ('USER_LIST.MODAL.RETIRED' | translate) : ('USER_LIST.MODAL.ACTIVE' | translate)  }}
+              </span>
+            </span>
+          </div>
+
+          <div class="detail-row" *ngIf="selectedUser.withdrawal_date">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.WITHDRAWAL_DATE' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.withdrawal_date }}</span>
+          </div>
+
+          <div class="detail-row" *ngIf="selectedUser.withdrawal_reason">
+            <strong class="detail-label">{{ 'USER_LIST.MODAL.WITHDRAWAL_REASON' | translate }}:</strong>
+            <span class="detail-value">{{ selectedUser.withdrawal_reason }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          {{ 'COMMON.CLOSE' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div *ngIf="isDeleteModalOpen" class="modal-backdrop" (click)="onDeleteModalBackdropClick($event)">
+  <div class="modal-dialog delete-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          {{ 'USER_LIST.MODAL.DELETE_TITLE' | translate }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          <strong>{{ 'USER_LIST.DELETE_WARNING' | translate }}</strong>
+        </div>
+
+        <p class="mb-3">{{ 'USER_LIST.MODAL.DELETE_CONFIRMATION' | translate }}</p>
+
+        <div *ngIf="userToDelete" class="user-info">
+          <strong>{{ 'USER_LIST.DELETE_USER_NAME' | translate }}</strong>
+          <div class="user-name">{{ userToDelete.name }} {{ userToDelete.last_name }} (ID: {{ userToDelete.id }})</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex gap-3 justify-content-end">
+          <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()" [disabled]="isDeletingUser">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+          <button type="button" class="btn btn-danger" (click)="confirmDelete()"
+            [disabled]="isDeletingUser">
+            <span *ngIf="isDeletingUser" class="spinner-border spinner-border-sm me-2" role="status"></span>
+            {{ isDeletingUser ? ('USER_LIST.DELETING' | translate) : ('COMMON.DELETE' | translate) }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Withdraw Confirmation Modal -->
+<div *ngIf="isWithdrawModalOpen" class="modal-backdrop" (click)="onWithdrawModalBackdropClick($event)">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ 'USER_LIST.MODAL.WITHDRAW_TITLE' | translate }}</h5>
+        <button type="button" class="btn-close" (click)="closeWithdrawModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{ 'USER_LIST.MODAL.WITHDRAW_CONFIRMATION' | translate }} <strong>{{ selectedUser?.name }} {{ selectedUser?.last_name }} (ID: {{ selectedUser?.id }})</strong>?</p>
+        <p class="mt-2">{{ 'USER_LIST.MODAL.WITHDRAW_NOTICE' | translate }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeWithdrawModal()" [disabled]="isWithdrawingUser">
+          {{ 'COMMON.CANCEL' | translate }}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="confirmWithdraw()" [disabled]="isWithdrawingUser">
+          <span *ngIf="isWithdrawingUser" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isWithdrawingUser ? ('USER_LIST.WITHDRAWING' | translate) : ('USER_LIST.MODAL.CONFIRM_WITHDRAW' | translate) }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

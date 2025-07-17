@@ -8,16 +8,16 @@ describe('PositiveNumberValidator', () => {
     expect(result).toBeNull();
   });
 
-  it('should return null for zero', () => {
+  it('should return error for zero', () => {
     const control = new FormControl(0);
     const result = positiveNumberValidator(control);
-    expect(result).toEqual({ notPositive: true });
+    expect(result).toEqual({ positiveNumber: true });
   });
 
   it('should return error for negative numbers', () => {
     const control = new FormControl(-1);
     const result = positiveNumberValidator(control);
-    expect(result).toEqual({ notPositive: true });
+    expect(result).toEqual({ positiveNumber: true });
   });
 
   it('should return null for null values', () => {
@@ -35,13 +35,13 @@ describe('PositiveNumberValidator', () => {
   it('should return error for empty string (truthy but evaluates to 0)', () => {
     const control = new FormControl('');
     const result = positiveNumberValidator(control);
-    expect(result).toEqual({ notPositive: true });
+    expect(result).toEqual({ positiveNumber: true });
   });
 
   it('should return error for zero string', () => {
     const control = new FormControl('0');
     const result = positiveNumberValidator(control);
-    expect(result).toEqual({ notPositive: true });
+    expect(result).toEqual({ positiveNumber: true });
   });
 
   it('should return null for positive decimal numbers', () => {
@@ -53,6 +53,6 @@ describe('PositiveNumberValidator', () => {
   it('should return error for negative decimal numbers', () => {
     const control = new FormControl(-0.5);
     const result = positiveNumberValidator(control);
-    expect(result).toEqual({ notPositive: true });
+    expect(result).toEqual({ positiveNumber: true });
   });
 });
