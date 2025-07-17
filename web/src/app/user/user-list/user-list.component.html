@@ -186,7 +186,7 @@
             <strong class="detail-label">{{ 'USER_LIST.MODAL.WITHDRAWAL_STATUS' | translate }}:</strong>
             <span class="detail-value">
               <span class="badge" [ngClass]="{'bg-success': !selectedUser.withdrawal_date, 'bg-danger': selectedUser.withdrawal_date}">
-                {{ selectedUser.withdrawal_date ? ('COMMON.NO' | translate) : ('COMMON.YES' | translate) }}
+                {{ selectedUser.withdrawal_date ? ('USER_LIST.MODAL.RETIRED' | translate) : ('USER_LIST.MODAL.ACTIVE' | translate)  }}
               </span>
             </span>
           </div>
