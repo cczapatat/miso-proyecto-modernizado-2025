@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
-from flask import request # Necesitaremos 'request' para los parámetros de paginación
+from flask import request
 
 from ..config.db import db
 from ..models.user_model import User
@@ -89,7 +89,12 @@ class UserRepository:
         user.name = user_dto.name
         user.last_name = user_dto.last_name
         user.age = user_dto.age
-        # ... (copia el resto de los campos a actualizar aquí)
+        user.height=user_dto.height
+        user.weight=user_dto.weight
+        user.arm=user_dto.arm
+        user.chest=user_dto.chest
+        user.waist=user_dto.waist
+        user.leg=user_dto.leg
         user.updated_at = datetime.now()
 
         try:

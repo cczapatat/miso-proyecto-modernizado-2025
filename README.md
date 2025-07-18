@@ -6,8 +6,8 @@
 
 ```bash
 cd users_ms &&
-docker build -t us-central1-docker.pkg.dev/miso-modernizacion-2025/miso-modernizacion/users-ms:1.0.0 . &&
-docker push us-central1-docker.pkg.dev/miso-modernizacion-2025/miso-modernizacion/users-ms:1.0.0 &&
+docker build -t us-central1-docker.pkg.dev/miso-modernizacion-2025/miso-modernizacion/users-ms:1.0.1 . &&
+docker push us-central1-docker.pkg.dev/miso-modernizacion-2025/miso-modernizacion/users-ms:1.0.1 &&
 cd ..
 ```
 

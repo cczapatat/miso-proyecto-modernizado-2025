@@ -19,10 +19,10 @@ spec:
     spec:
       containers:
         - name: usersapi
-          image: us-central1-docker.pkg.dev/miso-modernizacion-2025/miso-modernizacion/users-ms:1.0.0
+          image: us-central1-docker.pkg.dev/miso-modernizacion-2025/miso-modernizacion/users-ms:1.0.1
           resources:
             requests:
-              memory: "64Mi"
+              memory: "65Mi"
               cpu: "64m"
             limits:
               memory: "128Mi"
