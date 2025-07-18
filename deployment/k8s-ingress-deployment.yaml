@@ -1,0 +1,34 @@
+###################################
+# INGRESS
+###################################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway-ingress-miso-modernization
+  labels:
+    name: gateway-ingress-miso-modernization
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-service
+                port:
+                  number: 80
+          - path: /users
+            pathType: Prefix
+            backend:
+              service:
+                name: usersapi-service
+                port:
+                  number: 80
+          - path: /exercises
+            pathType: Prefix
+            backend:
+              service:
+                name: exercisesapi-service
+                port:
+                  number: 80
